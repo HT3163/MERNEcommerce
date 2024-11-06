@@ -46,6 +46,33 @@ import { CgWindows } from 'react-icons/cg';
 
 function App() {
 
+    // const { isAuthenticated, user } = useSelector((state) => state.user);
+
+    // const [stripeApiKey, setStripeApiKey] = useState('');
+
+    // async function getStripeApiKey() {
+    //     const { data } = await axios.get('/api/v1/stripeapikey');
+    //     setStripeApiKey(data.stripeApiKey)
+    // }
+
+    // React.useEffect(() => {
+
+    //     WebFont.load({
+    //         google: {
+    //             families: ["Roboto", "Droid Sans", "Chilanka"]
+    //         }
+    //     })
+    //     console.log(isAuthenticated)
+
+    //     store.dispatch(loadUser());
+    //     if(isAuthenticated){
+    //         getStripeApiKey();
+    //     }
+
+    // }, [])
+
+    // document.addEventListener('contextmenu', (e)=> e.preventDefault());
+
     const { isAuthenticated, user } = useSelector((state) => state.user);
 
     const [stripeApiKey, setStripeApiKey] = useState('');
@@ -62,15 +89,15 @@ function App() {
                 families: ["Roboto", "Droid Sans", "Chilanka"]
             }
         })
-        console.log(isAuthenticated)
-
+        
         store.dispatch(loadUser());
-        if(isAuthenticated){
-            getStripeApiKey();
-        }
-
+        console.log(isAuthenticated)
+        
     }, [])
-
+    
+    if(isAuthenticated){
+        getStripeApiKey();
+    }
     // document.addEventListener('contextmenu', (e)=> e.preventDefault());
 
     return (
