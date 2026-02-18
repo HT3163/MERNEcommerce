@@ -76,6 +76,7 @@ function App() {
     const { isAuthenticated, user } = useSelector((state) => state.user);
 
     const [stripeApiKey, setStripeApiKey] = useState('');
+    console.log("stripeapikey: ",stripeApiKey);
 
     async function getStripeApiKey() {
         const { data } = await axios.get('/api/v1/stripeapikey');
@@ -95,9 +96,10 @@ function App() {
         
     }, [])
     
-    // if(isAuthenticated){
+    if(isAuthenticated){
+        console.log('runing... ');
         getStripeApiKey();
-    // }
+    }
     // document.addEventListener('contextmenu', (e)=> e.preventDefault());
 
     return (
