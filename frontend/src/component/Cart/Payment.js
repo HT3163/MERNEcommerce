@@ -122,6 +122,7 @@ const Payment = () => {
     <Fragment>
       <MetaData title="Payment" />
       <CheckoutSteps activeStep={2} />
+      <div>Hamza tahir</div>
       <div className="paymentContainer">
         <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
           <Typography>Card Info</Typography>
