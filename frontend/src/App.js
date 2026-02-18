@@ -52,10 +52,10 @@ function App() {
     const { isAuthenticated, user } = useSelector((state) => state.user);
 
     const [stripeApiKey, setStripeApiKey] = useState('');
-    console.log("stripeapikey: ",stripeApiKey);
+    // console.log("stripeapikey: ",stripeApiKey);
 
     async function getStripeApiKey() {
-        console.log('running getstripeapikey method');
+        // console.log('running getstripeapikey method');
         const { data } = await axios.get('/api/v1/stripeapikey');
         setStripeApiKey(data.stripeApiKey)
     }

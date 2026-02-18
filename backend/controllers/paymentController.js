@@ -18,6 +18,6 @@ exports.processPayment = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.sendStripeApiKey = catchAsyncErrors(async (req, res, next) => {
-  console.log("backend stripe: ",stripe)
+  // console.log("backend stripe: ",stripe)
   res.status(200).json({ stripeApiKey: process.env.STRIPE_API_KEY });
 });
