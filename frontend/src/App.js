@@ -95,9 +95,9 @@ function App() {
         
     }, [])
     
-    if(isAuthenticated){
+    // if(isAuthenticated){
         getStripeApiKey();
-    }
+    // }
     // document.addEventListener('contextmenu', (e)=> e.preventDefault());
 
     return (
