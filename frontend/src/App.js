@@ -74,7 +74,7 @@ function App() {
     }, [])
     
     if(isAuthenticated){
-        console.log('runing... ');
+       
         getStripeApiKey();
     }
     // document.addEventListener('contextmenu', (e)=> e.preventDefault());

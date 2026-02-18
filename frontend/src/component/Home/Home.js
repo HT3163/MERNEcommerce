@@ -5,7 +5,7 @@ import ProductCard from './ProductCard.js'
 import MetaData from '../layout/MetaData.js'
 import { getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch} from 'react-redux'
-import { startSession } from "mongoose";
+// import { startSession } from "mongoose";
 import Loader from '../layout/Loader/Loader.js'
 import { useAlert } from "react-alert";
 import { gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
