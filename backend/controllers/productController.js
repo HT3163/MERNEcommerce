@@ -1,5 +1,6 @@
 
 const Product = require('../models/productModel');
+const Order = require("../models/orderModel");
 const ErrorHander = require('../utils/errorhander');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors');
 const ApiFeatures = require('../utils/apifeatures');
@@ -205,14 +206,32 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, productId } = req.body;
 
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    return next(new ErrorHander("Product not found", 404));
+  }
+
+  const hasPurchasedProduct = await Order.exists({
+    user: req.user._id,
+    orderItems: { $elemMatch: { product: productId } },
+  });
+
+  if (!hasPurchasedProduct) {
+    return next(
+      new ErrorHander(
+        "Only customers who bought this product can submit a review",
+        403
+      )
+    );
+  }
+
   const review = {
     user: req.user._id,
     name: req.user.name,
     rating: Number(rating),
     comment,
   };
-
-  const product = await Product.findById(productId);
 
   const isReviewed = product.reviews.find(
     (rev) => rev.user.toString() === req.user._id.toString()

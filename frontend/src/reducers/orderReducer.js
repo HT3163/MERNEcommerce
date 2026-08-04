@@ -52,10 +52,11 @@ export const newOrderReducer = (state = {}, action) => {
   }
 };
 
-export const myOrdersReducer = (state = { orders: [] }, action) => {
+export const myOrdersReducer = (state = { orders: [], hasFetched: false }, action) => {
   switch (action.type) {
     case MY_ORDERS_REQUEST:
       return {
+        ...state,
         loading: true,
       };
 
@@ -63,11 +64,14 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
       return {
         loading: false,
         orders: action.payload,
+        hasFetched: true,
       };
 
     case MY_ORDERS_FAIL:
       return {
         loading: false,
+        orders: [],
+        hasFetched: true,
         error: action.payload,
       };
     case CLEAR_ERRORS:
