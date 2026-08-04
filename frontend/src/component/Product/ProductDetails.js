@@ -3,10 +3,11 @@ import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    clearErrors,
+    clearErrors as clearProductErrors,
     getProductDetails,
     newReview,
 } from "../../actions/productAction";
+import { clearErrors as clearOrderErrors, myOrders } from "../../actions/orderAction";
 import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
@@ -21,7 +22,7 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ProductDetails = () => {
     const params = useParams();
@@ -32,8 +33,14 @@ const ProductDetails = () => {
         (state) => state.productDetails
     );
 
+    const { isAuthenticated } = useSelector((state) => state.user);
+
     const { success, error: reviewError } = useSelector(
         (state) => state.newReview
+    );
+
+    const { orders = [], loading: ordersLoading, hasFetched, error: ordersError } = useSelector(
+        (state) => state.myOrders
     );
 
     const options = {
@@ -47,6 +54,21 @@ const ProductDetails = () => {
     const [open, setOpen] = useState(false);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+
+    const hasPurchasedProduct =
+        orders &&
+        orders.some((order) =>
+            order.orderItems &&
+            order.orderItems.some((item) => {
+                const orderedProductId =
+                    typeof item.product === "string" ? item.product : item.product._id;
+
+                return orderedProductId === params.id;
+            })
+        );
+
+    const isReviewEligibilityPending = isAuthenticated && !hasFetched && !ordersLoading;
+    const isReviewDisabled = ordersLoading || isReviewEligibilityPending || !hasPurchasedProduct;
 
     const increaseQuantity = () => {
         if (product.Stock <= quantity) return;
@@ -86,20 +108,39 @@ const ProductDetails = () => {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            dispatch(clearErrors());
+            dispatch(clearProductErrors());
         }
 
         if (reviewError) {
             alert.error(reviewError);
-            dispatch(clearErrors());
+            dispatch(clearProductErrors());
+        }
+
+        if (ordersError) {
+            alert.error(ordersError);
+            dispatch(clearOrderErrors());
         }
 
         if (success) {
             alert.success("Review Submitted Successfully");
             dispatch({ type: NEW_REVIEW_RESET });
         }
+
+        if (isAuthenticated) {
+            dispatch(myOrders());
+        }
+
         dispatch(getProductDetails(params.id));
-    }, [dispatch, params.id, error, alert, reviewError, success]);
+    }, [
+        dispatch,
+        params.id,
+        error,
+        alert,
+        reviewError,
+        success,
+        isAuthenticated,
+        ordersError,
+    ]);
 
     return (
         <Fragment>
@@ -163,9 +204,30 @@ const ProductDetails = () => {
                                 Description : <p>{product.description}</p>
                             </div>
 
-                            <button onClick={submitReviewToggle} className="submitReview">
-                                Submit Review
-                            </button>
+                            {!isAuthenticated ? (
+                                <Link
+                                    to={`/login?redirect=/product/${params.id}`}
+                                    className="submitReview"
+                                >
+                                    Login to Review
+                                </Link>
+                            ) : (
+                                <Fragment>
+                                    <button
+                                        onClick={submitReviewToggle}
+                                        className="submitReview"
+                                        disabled={isReviewDisabled}
+                                    >
+                                        Submit Review
+                                    </button>
+
+                                    {hasFetched && !ordersLoading && !hasPurchasedProduct && (
+                                        <p className="reviewEligibilityMessage">
+                                            Only customers who bought this product can submit a review.
+                                        </p>
+                                    )}
+                                </Fragment>
+                            )}
                         </div>
                     </div>
 
