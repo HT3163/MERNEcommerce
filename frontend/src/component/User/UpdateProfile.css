@@ -165,17 +165,107 @@
   margin-top: 0.5rem;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.up-submit-btn:hover {
+.up-submit-btn:hover:not(:disabled) {
   background: #1f1f1f;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.up-submit-btn:active {
+.up-submit-btn:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: none;
+}
+
+.up-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Button loading state ─────────────────────────────────── */
+.up-btn-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.up-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: up-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes up-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Status Banner ────────────────────────────────────────── */
+.up-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+  animation: up-banner-in 0.3s ease;
+}
+
+@keyframes up-banner-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.up-banner--error {
+  background: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  color: #b91c1c;
+}
+
+.up-banner--success {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  color: #15803d;
+}
+
+.up-banner-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.up-banner-text {
+  flex: 1;
+}
+
+.up-banner-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.6;
+  padding: 0;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.up-banner-close:hover {
+  opacity: 1;
 }
 
 /* ── Responsive — mobile ──────────────────────────────────── */
