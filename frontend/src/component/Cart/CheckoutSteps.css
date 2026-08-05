@@ -1,13 +1,38 @@
-.MuiStepConnector-line {
-  display: none !important;
-}
+/* CheckoutSteps — custom stepper overrides */
 
+/* Hide MUI connector line, use our own */
+.MuiStepConnector-line { display: none !important; }
 .MuiStepConnector-root {
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.349);
+  height: 2px;
+  background-color: #e5e7eb;
+  margin: 0 -8px;
+  top: 20px;
+}
+.MuiStepConnector-active,
+.MuiStepConnector-completed { background-color: #6366f1; }
+
+/* Stepper wrapper */
+.checkout-steps-wrap {
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 1.25rem 1rem;
 }
 
-.MuiStepConnector-active,
-.MuiStepConnector-completed {
-  background-color: tomato;
+/* Step label text */
+.MuiStepLabel-label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #9ca3af !important;
+  margin-top: 6px !important;
 }
+.MuiStepLabel-active  { color: #6366f1 !important; }
+.MuiStepLabel-completed { color: #10b981 !important; }
+
+/* Step icon circle */
+.MuiStepIcon-root { color: #e5e7eb !important; font-size: 1.8rem !important; }
+.MuiStepIcon-active    { color: #6366f1 !important; }
+.MuiStepIcon-completed { color: #10b981 !important; }
+.MuiStepIcon-text { fill: #fff !important; font-family: 'Inter', sans-serif !important; font-weight: 700 !important; }

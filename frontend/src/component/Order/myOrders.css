@@ -1,80 +1,92 @@
-.myOrdersPage {
-  width: 100vw;
-  max-width: 100%;
-  padding: 0 7vmax;
-  box-sizing: border-box;
-  background-color: rgb(235, 235, 235);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
+/* myOrders.css — layout via Tailwind, custom elements here */
+
+@keyframes ordFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ord-fade-up { animation: ordFadeUp 0.5s ease both; }
+.ord-d1 { animation-delay: 0.06s; }
+.ord-d2 { animation-delay: 0.12s; }
+
+/* ── Status badge ───────────────────────────────────── */
+.ord-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ord-badge-processing { background: #fef9c3; color: #a16207; }
+.ord-badge-shipped    { background: #dbeafe; color: #1d4ed8; }
+.ord-badge-delivered  { background: #dcfce7; color: #15803d; }
+.ord-badge-cancelled  { background: #fee2e2; color: #dc2626; }
+
+/* ── Order row card ─────────────────────────────────── */
+.ord-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.125rem 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.15s;
+  cursor: default;
+}
+.ord-row:last-child   { border-bottom: none; }
+.ord-row:hover        { background: #fafafa; }
+
+/* ── View detail button ─────────────────────────────── */
+.ord-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #374151;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.ord-view-btn:hover {
+  background: #0a0a0a;
+  color: #fff;
+  border-color: #0a0a0a;
+}
+
+/* ── Empty state ────────────────────────────────────── */
+.ord-empty {
   display: flex;
   flex-direction: column;
-}
-
-#myOrdersHeading {
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font: 400 1.2vmax "Roboto";
-  padding: 0.5vmax;
-  box-sizing: border-box;
-  color: rgb(255, 255, 255);
-  transition: all 0.5s;
-  background-color: rgb(44, 44, 44);
+  padding: 5rem 2rem;
+  min-height: 50vh;
 }
 
-.myOrdersTable {
-  background-color: white;
-}
-
-.myOrdersTable div {
-  font: 300 1vmax "Roboto";
-  color: rgba(0, 0, 0, 0.678);
-  border: none;
-}
-
-.myOrdersTable a {
-  color: rgba(0, 0, 0, 0.527);
-  transition: all 0.5s;
-}
-
-.myOrdersTable a:hover {
-  color: tomato;
-}
-
-.MuiDataGrid-columnHeader {
-  background-color: tomato;
-  padding: 1vmax !important;
-}
-
-.MuiDataGrid-columnHeader div {
-  color: rgb(255, 255, 255);
-  font: 500 1.1vmax "Roboto" !important;
-}
-
-.MuiDataGrid-iconSeparator {
-  display: none !important;
-}
-
-@media screen and (max-width: 600px) {
-  .myOrdersPage {
-    padding: 0;
-    height: 93vh;
+/* ── Mobile: stack columns ──────────────────────────── */
+@media (max-width: 640px) {
+  .ord-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
   }
-
-  #myOrdersHeading {
-    font: 400 2.2vmax "Roboto";
-    padding: 4vw;
-  }
-
-  .myOrdersTable div {
-    font: 300 4vw "Roboto";
-  }
-
-  .MuiDataGrid-columnHeader {
-    padding: 20px !important;
-  }
-
-  .MuiDataGrid-columnHeader div {
-    font: 500 5vw "Roboto" !important;
-  }
+  .ord-row-id    { grid-column: 1; grid-row: 1; }
+  .ord-row-badge { grid-column: 2; grid-row: 1; }
+  .ord-row-meta  { grid-column: 1; grid-row: 2; }
+  .ord-row-amt   { grid-column: 1; grid-row: 3; }
+  .ord-row-btn   { grid-column: 2; grid-row: 2 / 4; align-self: center; }
 }

@@ -1,111 +1,80 @@
-.shippingContainer {
-  width: 100vw;
-  max-width: 100%;
+/* ── Shipping page ──────────────────────────────────── */
+@keyframes shipFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ship-fade-up { animation: shipFadeUp 0.5s ease both; }
+
+/* Field group: icon + input side-by-side */
+.ship-field {
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.shippingBox {
-  background-color: white;
-  width: 25vw;
-  height: 90vh;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.shippingHeading {
-  text-align: center;
-  color: rgba(0, 0, 0, 0.664);
-  font: 400 1.3vmax "Roboto";
-  padding: 1.3vmax;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.205);
-  width: 50%;
-  margin: auto;
-}
-
-.shippingForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: auto;
-  padding: 2vmax;
-  justify-content: space-evenly;
-  height: 80%;
-  transition: all 0.5s;
-}
-
-.shippingForm > div {
-  display: flex;
-  width: 100%;
   align-items: center;
 }
-
-.shippingForm > div > input,
-.shippingForm > div > select {
-  padding: 1vmax 4vmax;
-  padding-right: 1vmax;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.267);
-  border-radius: 4px;
-  font: 300 0.9vmax cursive;
-  outline: none;
-}
-
-.shippingForm > div > svg {
+.ship-field-icon {
   position: absolute;
-  transform: translateX(1vmax);
-  font-size: 1.6vmax;
-  color: rgba(0, 0, 0, 0.623);
+  left: 1rem;
+  color: #9ca3af;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.18s;
+  z-index: 1;
 }
+.ship-field:focus-within .ship-field-icon { color: #6366f1; }
 
-.shippingBtn {
-  border: none;
-  background-color: tomato;
-  color: white;
-  font: 300 1vmax "Roboto";
+.ship-input,
+.ship-select {
   width: 100%;
-  padding: 1vmax;
-  cursor: pointer;
-  transition: all 0.5s;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #111;
+  background: #fff;
   outline: none;
-  margin: 2vmax;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.ship-input::placeholder { color: #9ca3af; }
+.ship-input:focus,
+.ship-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
 }
 
-.shippingBtn:hover {
-  background-color: rgb(179, 66, 46);
+/* Submit button */
+.ship-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.5rem;
+  background: #0a0a0a;
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.22s, transform 0.18s, box-shadow 0.18s;
+  margin-top: 0.5rem;
 }
-
-@media screen and (max-width: 600px) {
-  .shippingBox {
-    width: 100vw;
-    height: 95vh;
-  }
-
-  .shippingHeading {
-    font: 400 6vw "Roboto";
-    padding: 5vw;
-  }
-
-  .shippingForm {
-    padding: 11vw;
-  }
-
-  .shippingForm > div > input,
-  .shippingForm > div > select {
-    padding: 5vw 10vw;
-    font: 300 4vw cursive;
-  }
-
-  .shippingForm > div > svg {
-    font-size: 6vw;
-    transform: translateX(3vw);
-  }
-
-  .shippingBtn {
-    font: 300 4vw "Roboto";
-    padding: 4vw;
-  }
+.ship-submit-btn:hover:not(:disabled) {
+  background: #1f1f1f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.ship-submit-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }

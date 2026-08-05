@@ -1,320 +1,295 @@
-.ProductDetails {
-    background-color: rgb(255, 255, 255);
-    width: 100vw;
-    max-width: 100%;
-    padding: 6vmax;
-    box-sizing: border-box;
-    display: flex;
+/* =====================================================
+   ProductDetails.css
+   Layout handled by Tailwind. This file covers:
+   gallery zoom, animations, custom controls, tabs,
+   review cards, dialog, sticky panel, related grid.
+   ===================================================== */
+
+/* ── Entry animations ───────────────────────────────── */
+@keyframes pdFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pd-fade-up   { animation: pdFadeUp 0.55s ease both; }
+.pd-delay-1   { animation-delay: 0.07s; }
+.pd-delay-2   { animation-delay: 0.14s; }
+.pd-delay-3   { animation-delay: 0.21s; }
+
+/* ── Gallery — main frame ───────────────────────────── */
+.pd-gallery-main {
+  position: relative;
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 1rem;
+  cursor: zoom-in;
+  aspect-ratio: 1 / 1;
+  user-select: none;
+}
+.pd-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.22s ease;
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+  pointer-events: none;
+}
+.pd-gallery-main.zoomed { cursor: zoom-out; }
+.pd-gallery-main.zoomed img { transform: scale(2.2); }
+
+/* ── Gallery — thumbnails ───────────────────────────── */
+.pd-thumb-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+.pd-thumb-scroll::-webkit-scrollbar { height: 4px; }
+.pd-thumb-scroll::-webkit-scrollbar-track { background: transparent; }
+.pd-thumb-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+.pd-thumb {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: #f3f4f6;
+  transition: border-color 0.18s, opacity 0.18s, transform 0.18s;
+}
+.pd-thumb:hover { opacity: 0.8; transform: translateY(-2px); }
+.pd-thumb.active { border-color: #6366f1; }
+
+/* ── Sticky info panel ──────────────────────────────── */
+.pd-sticky {
+  position: sticky;
+  top: 88px;
+  align-self: flex-start;
 }
 
-.ProductDetails>div {
-    width: 29%;
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 2vmax;
-    box-sizing: border-box;
-    border: 1px solid white;
+/* ── Quantity control ───────────────────────────────── */
+.pd-qty-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #374151;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  user-select: none;
+  flex-shrink: 0;
+}
+.pd-qty-btn:hover:not(:disabled) {
+  background: #0a0a0a;
+  border-color: #0a0a0a;
+  color: #fff;
+}
+.pd-qty-btn:disabled { opacity: 0.32; cursor: not-allowed; }
+
+/* ── Add to cart ────────────────────────────────────── */
+.pd-cart-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1;
+  padding: 0.9rem 1.5rem;
+  background: #0a0a0a;
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.22s, transform 0.18s, box-shadow 0.18s;
+}
+.pd-cart-btn:hover:not(:disabled) {
+  background: #1f1f1f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.pd-cart-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.ProductDetails>div:last-child {
-    align-items: flex-start;
+/* ── Wishlist button ────────────────────────────────── */
+.pd-wish-btn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 9999px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.22s;
+  flex-shrink: 0;
+  color: #9ca3af;
+}
+.pd-wish-btn:hover,
+.pd-wish-btn.wishlisted {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fff5f5;
 }
 
-.CarouselImage {
-    width: 20vmax;
+/* ── Tab navigation ─────────────────────────────────── */
+.pd-tab-btn {
+  padding: 0.75rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.pd-tab-btn:hover  { color: #374151; }
+.pd-tab-btn.active { color: #0a0a0a; border-bottom-color: #0a0a0a; }
+
+/* ── Shipping badges ────────────────────────────────── */
+.pd-ship-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 0.75rem;
 }
 
-.detailsBlock-1>h2 {
-    color: rgb(54, 54, 54);
-    font: 600 1.6vmax "Roboto";
+/* ── Rating distribution bar ───────────────────────── */
+.pd-bar-track {
+  flex: 1;
+  height: 6px;
+  background: #f3f4f6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.pd-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  border-radius: 999px;
+  transition: width 0.55s ease;
 }
 
-.detailsBlock-1>p {
-    color: rgba(54, 54, 54, 0.582);
-    font: 200 0.6vmax cursive;
+/* ── Review card ────────────────────────────────────── */
+.pd-review-card {
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  transition: box-shadow 0.2s;
+}
+.pd-review-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+
+/* ── Review dialog overlay ──────────────────────────── */
+.pd-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.48);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: pdFadeUp 0.22s ease both;
+}
+.pd-dialog {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.16);
 }
 
-.detailsBlock-2 {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.205);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.205);
-    width: 70%;
-    padding: 1vmax 0;
+/* ── Textarea ───────────────────────────────────────── */
+.pd-textarea {
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  min-height: 96px;
+  color: #111;
+  box-sizing: border-box;
+}
+.pd-textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
 }
 
-.detailsBlock-2-span {
-    font: 200 0.8vmax cursive;
-    color: rgba(0, 0, 0, 0.699);
+/* ── Related product card ───────────────────────────── */
+.pd-related-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
-
-.detailsBlock-3 {
-    width: 70%;
+.pd-related-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
 }
-
-.detailsBlock-3>h1 {
-    color: rgba(17, 17, 17, 0.795);
-    font: 400 1.8vmax "Franklin Gothic Medium";
-    margin: 1vmax 0;
+.pd-related-img-wrap { overflow: hidden; background: #f3f4f6; }
+.pd-related-img-wrap img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.38s ease;
 }
+.pd-related-card:hover .pd-related-img-wrap img { transform: scale(1.07); }
 
-.detailsBlock-3-1 {
-    display: flex;
-    align-items: center;
+/* ── Stock pill ─────────────────────────────────────── */
+.pd-in-stock  { background: #dcfce7; color: #15803d; }
+.pd-out-stock { background: #fee2e2; color: #dc2626; }
+
+/* ── Share icon buttons ─────────────────────────────── */
+.pd-share-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.18s;
+  font-size: 0.8rem;
 }
+.pd-share-btn:hover { background: #0a0a0a; border-color: #0a0a0a; color: #fff; }
 
-.detailsBlock-3-1-1>button {
-    border: none;
-    background-color: rgba(0, 0, 0, 0.616);
-    padding: 0.5vmax;
-    cursor: pointer;
-    color: white;
-    transition: all 0.5s;
-}
-
-.detailsBlock-3-1-1>button:hover {
-    background-color: rgba(0, 0, 0, 0.767);
-}
-
-.detailsBlock-3-1-1>input {
-    border: none;
-    padding: 0.5vmax;
-    width: 1vmax;
-    text-align: center;
-    outline: none;
-    font: 400 0.8vmax "Roboto";
-    color: rgba(0, 0, 0, 0.74);
-}
-
-.detailsBlock-3-1>button:last-child {
-    border: none;
-    cursor: pointer;
-    color: white;
-    transition: all 0.5s;
-    background-color: tomato;
-    font: 500 0.7vmax "Roboto";
-    border-radius: 20px;
-    padding: 0.5vmax 2vmax;
-    margin: 1vmax;
-    outline: none;
-}
-
-.detailsBlock-3-1>button:last-child:hover {
-    background-color: rgb(214, 84, 61);
-}
-
-.detailsBlock-3>p {
-    border-top: 1px solid rgba(0, 0, 0, 0.205);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.205);
-    padding: 1vmax 0;
-    color: rgba(0, 0, 0, 0.651);
-    font: 400 1vmax "Roboto";
-    margin: 1vmax 0;
-}
-
-.detailsBlock-4 {
-    color: rgba(0, 0, 0, 0.897);
-    font: 500 1.2vmax sans-serif;
-}
-
-.detailsBlock-4>p {
-    color: rgba(0, 0, 0, 0.534);
-    font: 300 0.8vmax sans-serif;
-}
-
-.submitReview {
-    border: none;
-    background-color: tomato;
-    font: 500 0.7vmax "Roboto";
-    border-radius: 20px;
-    padding: 0.6vmax 2vmax;
-    margin: 1vmax 0;
-    color: white;
-    cursor: pointer;
-    transition: all 0.5s;
-    outline: none;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-}
-
-.submitReview:hover {
-    background-color: rgb(197, 68, 45);
-    transform: scale(1.1);
-}
-
-.submitReview:disabled {
-    background-color: rgba(255, 99, 71, 0.55);
-    cursor: not-allowed;
-    transform: none;
-}
-
-.submitReview:disabled:hover {
-    background-color: rgba(255, 99, 71, 0.55);
-    transform: none;
-}
-
-.reviewEligibilityMessage {
-    color: rgba(0, 0, 0, 0.6);
-    font: 300 0.8vmax "Roboto";
-    margin-top: 0.3vmax;
-}
-
-.submitDialog {
-    display: flex;
-    flex-direction: column;
-}
-
-.submitDialogTextArea {
-    border: 1px solid rgba(0, 0, 0, 0.082);
-    margin: 1vmax 0;
-    outline: none;
-    padding: 1rem;
-    font: 300 1rem "Roboto";
-}
-
-.reviewsHeading {
-    color: #000000be;
-    font: 500 1.4vmax "Roboto";
-    text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.226);
-    padding: 1vmax;
-    width: 20vmax;
-    margin: auto;
-    margin-bottom: 4vmax;
-}
-
-.reviews {
-    display: flex;
-    overflow: auto;
-}
-
-.reviewCard {
-    flex: none;
-
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.226);
-    border: 1px solid rgba(56, 56, 56, 0.116);
-    width: 30vmax;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 1vmax;
-    padding: 3vmax;
-}
-
-.reviewCard>img {
-    width: 5vmax;
-}
-
-.reviewCard>p {
-    color: rgba(0, 0, 0, 0.836);
-    font: 600 0.9vmax "Roboto";
-}
-
-.reviewCardComment {
-    color: rgba(0, 0, 0, 0.445);
-    font: 300 0.8vmax cursive;
-}
-
-.noReviews {
-    font: 400 1.3vmax "Gill Sans";
-    text-align: center;
-    color: rgba(0, 0, 0, 0.548);
-}
-
-@media screen and (max-width: 600px) {
-    .ProductDetails {
-        flex-direction: column;
-        height: unset;
-    }
-
-    .ProductDetails>div:last-child {
-        align-items: center;
-    }
-
-    .detailsBlock-1>h2 {
-        font-size: 2.8vmax;
-        text-align: center;
-    }
-
-    .detailsBlock-1>p {
-        text-align: center;
-        font-size: 1vmax;
-    }
-
-    .detailsBlock-2 {
-        justify-content: center;
-    }
-
-    .detailsBlock-2>span {
-        font-size: 1.5vmax;
-    }
-
-    .detailsBlock-3>h1 {
-        font: 700 3vmax "Franklin Gothic Medium";
-        text-align: center;
-    }
-
-    .detailsBlock-3-1 {
-        flex-direction: column;
-    }
-
-    .detailsBlock-3-1-1 {
-        padding: 2vmax 0;
-    }
-
-    .detailsBlock-3-1-1>button {
-        padding: 1.2vmax;
-        width: 4vmax;
-    }
-
-    .detailsBlock-3-1-1>input {
-        padding: 1.5vmax;
-        width: 3vmax;
-        font: 400 1.8vmax "Roboto";
-    }
-
-    .detailsBlock-3-1>button:last-child {
-        font: 500 1.7vmax "Roboto";
-        padding: 1.5vmax;
-        width: 20vmax;
-        margin: 3vmax 0;
-    }
-
-    .detailsBlock-3>p {
-        padding: 2.5vmax 0;
-        text-align: center;
-        font: 400 2vmax "Roboto";
-    }
-
-    .detailsBlock-4 {
-        font: 500 2.5vmax sans-serif;
-    }
-
-    .detailsBlock-4>p {
-        font: 300 1.8vmax sans-serif;
-    }
-
-    .submitReview {
-        font: 500 1.7vmax "Roboto";
-        padding: 1.5vmax;
-        width: 20vmax;
-        margin: 3vmax 0;
-    }
-
-    .reviewEligibilityMessage {
-        font: 300 1.8vmax "Roboto";
-        text-align: center;
-    }
-
-    .reviewCard>p {
-        font: 600 3vw "Roboto";
-    }
-
-    .reviewCardComment {
-        font: 300 5vw cursive;
-    }
+/* ── Mobile: un-stick the panel ─────────────────────── */
+@media (max-width: 1023px) {
+  .pd-sticky { position: static; }
 }

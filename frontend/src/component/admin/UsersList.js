@@ -1,143 +1,252 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import "./productList.css";
+import "./userList.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { Button } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
 import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
 import { DELETE_USER_RESET } from "../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
+import {
+  FiUsers,
+  FiShield,
+  FiUser,
+  FiSearch,
+  FiEdit2,
+  FiTrash2,
+  FiUserCheck,
+} from "react-icons/fi";
 
 const UsersList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const alert    = useAlert();
 
-  const alert = useAlert();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const { error, users } = useSelector((state) => state.allUsers);
-
-  const {
-    error: deleteError,
-    isDeleted,
-    message,
-  } = useSelector((state) => state.profile);
+  const { error, users }                               = useSelector((s) => s.allUsers);
+  const { error: deleteError, isDeleted, message }     = useSelector((s) => s.profile);
 
   const deleteUserHandler = (id) => {
-    dispatch(deleteUser(id));
+    if (window.confirm("Delete this user? This cannot be undone.")) {
+      dispatch(deleteUser(id));
+    }
   };
 
   useEffect(() => {
-    if (error) {
-      alert.error(error);
-      dispatch(clearErrors());
-    }
-
-    if (deleteError) {
-      alert.error(deleteError);
-      dispatch(clearErrors());
-    }
-
+    if (error)       { alert.error(error);       dispatch(clearErrors()); }
+    if (deleteError) { alert.error(deleteError);  dispatch(clearErrors()); }
     if (isDeleted) {
       alert.success(message);
       navigate("/admin/users");
       dispatch({ type: DELETE_USER_RESET });
     }
-
     dispatch(getAllUsers());
   }, [dispatch, alert, error, deleteError, navigate, isDeleted, message]);
 
-  const columns = [
-    { field: "id", headerName: "User ID", minWidth: 180, flex: 0.8 },
+  /* ── Derived stats ───────────────────────────────────────── */
+  const totalUsers  = users ? users.length : 0;
+  const admins      = users ? users.filter((u) => u.role === "admin").length : 0;
+  const regular     = totalUsers - admins;
 
+  /* ── Role badge helper ───────────────────────────────────── */
+  const RoleBadge = ({ role }) =>
+    role === "admin" ? (
+      <span className="ul-badge ul-badge-admin">
+        <FiShield size={11} /> Admin
+      </span>
+    ) : (
+      <span className="ul-badge ul-badge-user">
+        <FiUser size={11} /> User
+      </span>
+    );
+
+  /* ── Avatar initials helper ──────────────────────────────── */
+  const Avatar = ({ name }) => {
+    const initials = name
+      ? name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)
+      : "U";
+    return <div className="ul-avatar">{initials}</div>;
+  };
+
+  /* ── DataGrid columns ───────────────────────────────────── */
+  const columns = [
     {
-      field: "email",
-      headerName: "Email",
+      field: "id",
+      headerName: "User ID",
       minWidth: 200,
-      flex: 1,
+      flex: 0.5,
+      renderCell: (params) => (
+        <span className="ul-user-id">{params.value}</span>
+      ),
     },
     {
       field: "name",
       headerName: "Name",
-      minWidth: 150,
-      flex: 0.5,
+      minWidth: 180,
+      flex: 0.6,
+      renderCell: (params) => (
+        <div className="ul-name-cell">
+          <Avatar name={params.value} />
+          <span className="ul-name">{params.value}</span>
+        </div>
+      ),
     },
-
+    {
+      field: "email",
+      headerName: "Email",
+      minWidth: 220,
+      flex: 0.8,
+      renderCell: (params) => (
+        <span className="ul-email">{params.value}</span>
+      ),
+    },
     {
       field: "role",
       headerName: "Role",
-      type: "number",
-      minWidth: 150,
+      minWidth: 120,
       flex: 0.3,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "role") === "admin"
-          ? "greenColor"
-          : "redColor";
-      },
+      renderCell: (params) => <RoleBadge role={params.value} />,
     },
-
     {
       field: "actions",
-      flex: 0.3,
       headerName: "Actions",
-      minWidth: 150,
-      type: "number",
+      minWidth: 110,
+      flex: 0.25,
       sortable: false,
       renderCell: (params) => {
+        const id = params.getValue(params.id, "id");
         return (
-          <Fragment>
-            <Link to={`/admin/user/${params.getValue(params.id, "id")}`}>
-              <EditIcon />
-            </Link>
-
-            <Button
-              onClick={() =>
-                deleteUserHandler(params.getValue(params.id, "id"))
-              }
+          <div className="ul-actions">
+            <Link
+              to={`/admin/user/${id}`}
+              className="ul-action-btn ul-action-edit"
+              title="Edit user"
             >
-              <DeleteIcon />
-            </Button>
-          </Fragment>
+              <FiEdit2 size={15} />
+            </Link>
+            <button
+              className="ul-action-btn ul-action-delete"
+              onClick={() => deleteUserHandler(id)}
+              title="Delete user"
+            >
+              <FiTrash2 size={15} />
+            </button>
+          </div>
         );
       },
     },
   ];
 
-  const rows = [];
+  /* ── Rows ────────────────────────────────────────────────── */
+  const allRows = users
+    ? users.map((u) => ({
+        id:    u._id,
+        name:  u.name,
+        email: u.email,
+        role:  u.role,
+      }))
+    : [];
 
-  users &&
-    users.forEach((item) => {
-      rows.push({
-        id: item._id,
-        role: item.role,
-        email: item.email,
-        name: item.name,
-      });
-    });
+  const rows = searchQuery.trim()
+    ? allRows.filter(
+        (r) =>
+          r.name.toLowerCase().includes(searchQuery.toLowerCase())  ||
+          r.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          r.role.toLowerCase().includes(searchQuery.toLowerCase())  ||
+          r.id.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allRows;
 
+  /* ── Render ──────────────────────────────────────────────── */
   return (
     <Fragment>
-      <MetaData title={`ALL USERS - Admin`} />
+      <MetaData title="All Users — Admin" />
 
-      <div className="dashboard">
+      <div className="ul-layout">
         <SideBar />
-        <div className="productListContainer">
-          <h1 id="productListHeading">ALL USERS</h1>
 
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={10}
-            disableSelectionOnClick
-            className="productListTable"
-            autoHeight
-          />
-        </div>
-      </div>
+        <div className="ul-main">
+
+          {/* ── Top bar ───────────────────────────────────── */}
+          <div className="ul-topbar">
+            <div className="ul-topbar-left">
+              <h1>Users</h1>
+              <p>Manage registered accounts and roles</p>
+            </div>
+          </div>
+
+          {/* ── Body ──────────────────────────────────────── */}
+          <div className="ul-body">
+
+            {/* Stat cards */}
+            <div className="ul-stats">
+              <div className="ul-stat-card">
+                <div className="ul-stat-icon" style={{ background: "#eef2ff" }}>
+                  <FiUsers size={20} color="#6366f1" />
+                </div>
+                <div className="ul-stat-info">
+                  <p className="ul-stat-label">Total Users</p>
+                  <h2 className="ul-stat-value">{totalUsers}</h2>
+                </div>
+              </div>
+
+              <div className="ul-stat-card">
+                <div className="ul-stat-icon" style={{ background: "#fef3c7" }}>
+                  <FiShield size={20} color="#d97706" />
+                </div>
+                <div className="ul-stat-info">
+                  <p className="ul-stat-label">Admins</p>
+                  <h2 className="ul-stat-value">{admins}</h2>
+                </div>
+              </div>
+
+              <div className="ul-stat-card">
+                <div className="ul-stat-icon" style={{ background: "#f0fdf4" }}>
+                  <FiUserCheck size={20} color="#16a34a" />
+                </div>
+                <div className="ul-stat-info">
+                  <p className="ul-stat-label">Regular Users</p>
+                  <h2 className="ul-stat-value">{regular}</h2>
+                </div>
+              </div>
+            </div>
+
+            {/* Table card */}
+            <div className="ul-table-card">
+              <div className="ul-table-header">
+                <div>
+                  <p className="ul-table-eyebrow">Accounts</p>
+                  <h3 className="ul-table-title">All Users</h3>
+                </div>
+                <div className="ul-search-wrap">
+                  <FiSearch size={15} className="ul-search-icon" />
+                  <input
+                    type="text"
+                    className="ul-search-input"
+                    placeholder="Search by name, email or role…"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={10}
+                rowsPerPageOptions={[10, 25, 50]}
+                disableSelectionOnClick
+                className="ul-datagrid"
+                autoHeight
+              />
+            </div>
+
+          </div>{/* /ul-body */}
+        </div>{/* /ul-main */}
+      </div>{/* /ul-layout */}
     </Fragment>
   );
 };

@@ -1,28 +1,502 @@
-.contactContainer {
-  height: 100vh;
-  width: 100vw;
-  max-width: 100%;
+/* =====================================================
+   Contact.css — Contact page styles
+   ===================================================== */
+
+/* ── Hero ───────────────────────────────────────────── */
+.ct-hero {
+  position: relative;
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.ct-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1600&q=85');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.03);
+  transition: transform 8s ease;
+}
+
+.ct-hero:hover .ct-hero-bg {
+  transform: scale(1);
+}
+
+.ct-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+}
+
+.ct-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 4rem 1.5rem 5rem;
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: ct-fadeUp 0.7s ease both;
+}
+
+@keyframes ct-fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ct-pill {
+  display: inline-block;
+  background: rgba(99, 102, 241, 0.22);
+  border: 1px solid rgba(165, 180, 252, 0.45);
+  color: #c7d2fe;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  margin-bottom: 1.4rem;
+}
+
+.ct-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.ct-hero-title em {
+  font-style: italic;
+  color: #a5b4fc;
+}
+
+.ct-hero-sub {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.75;
+  max-width: 460px;
+  margin: 0;
+}
+
+/* ── Info cards bar ─────────────────────────────────── */
+.ct-info-bar {
   display: grid;
-  place-items: center;
-  background-color: white;
-  position: fixed;
+  grid-template-columns: 1fr;
+  background: #fff;
+  border-bottom: 1px solid #efefef;
 }
 
-.mailBtn {
+@media (min-width: 640px) {
+  .ct-info-bar { grid-template-columns: repeat(3, 1fr); }
+}
+
+.ct-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.25rem 1.5rem;
+  border-right: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
   text-decoration: none;
-  transform: translateX(-100vw);
-  animation: mailBtnAnimation 2s forwards;
+  cursor: default;
+  transition: background 0.2s;
 }
 
-.mailBtn > button {
+a.ct-info-card {
+  cursor: pointer;
+}
+
+a.ct-info-card:hover {
+  background: #fafafa;
+}
+
+@media (min-width: 640px) {
+  .ct-info-card { border-bottom: none; }
+  .ct-info-card:last-child { border-right: none; }
+}
+
+.ct-info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #6366f1;
+  margin-bottom: 1rem;
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+
+a.ct-info-card:hover .ct-info-icon {
+  background: #6366f1;
+  color: #fff;
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.ct-info-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin: 0 0 0.35rem;
+}
+
+.ct-info-line1 {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0 0 0.2rem;
+}
+
+.ct-info-line2 {
+  font-size: 0.76rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Main section ───────────────────────────────────── */
+.ct-main {
+  background: #f4f5f7;
+  padding: 5rem 1.5rem 6rem;
+}
+
+@media (min-width: 768px) {
+  .ct-main { padding: 6rem 2.5rem 7rem; }
+}
+
+.ct-main-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 900px) {
+  .ct-main-inner {
+    grid-template-columns: 1fr 370px;
+    gap: 2.5rem;
+  }
+}
+
+/* ── Form card ──────────────────────────────────────── */
+.ct-form-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 2.5rem 1.75rem;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.07);
+  animation: ct-fadeUp 0.5s ease both;
+}
+
+@media (min-width: 640px) {
+  .ct-form-card { padding: 3rem; }
+}
+
+.ct-form-header {
+  margin-bottom: 2rem;
+}
+
+.ct-section-label {
+  display: block;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6366f1;
+  margin-bottom: 0.5rem;
+}
+
+.ct-form-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #0a0a0a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ── Form fields ────────────────────────────────────── */
+.ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.ct-form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+@media (min-width: 560px) {
+  .ct-form-row { grid-template-columns: 1fr 1fr; }
+}
+
+.ct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.ct-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.02em;
+}
+
+.ct-input,
+.ct-textarea {
+  font-size: 0.92rem;
+  color: #111;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.ct-input:focus,
+.ct-textarea:focus {
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.ct-input::placeholder,
+.ct-textarea::placeholder {
+  color: #b0b8c4;
+}
+
+/* ── Button ─────────────────────────────────────────── */
+.ct-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.95rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
   text-decoration: none;
-  font: 200 2vmax "Roboto";
-  cursor: url("https://img.icons8.com/color/48/000000/edit--v2.png"), pointer;
-  padding: 2vmax;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
 }
 
-@keyframes mailBtnAnimation {
-  to {
-    transform: translateX(0);
+.ct-btn:hover {
+  background: #1f1f1f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+}
+
+.ct-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.ct-btn-full {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* ── Success state ──────────────────────────────────── */
+.ct-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+  animation: ct-fadeUp 0.4s ease both;
+}
+
+.ct-success-icon {
+  color: #22c55e;
+  animation: ct-popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes ct-popIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.ct-success-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin: 0;
+}
+
+.ct-success-sub {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.7;
+  max-width: 340px;
+  margin: 0 0 0.5rem;
+}
+
+/* ── Sidebar ────────────────────────────────────────── */
+.ct-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.ct-sidebar-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+  animation: ct-fadeUp 0.55s ease both;
+}
+
+.ct-sidebar-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin: 0 0 0.75rem;
+  line-height: 1.25;
+}
+
+.ct-sidebar-desc {
+  font-size: 0.88rem;
+  color: #6b7280;
+  line-height: 1.7;
+  margin: 0 0 1.4rem;
+}
+
+.ct-sidebar-desc strong {
+  color: #0a0a0a;
+  font-weight: 600;
+}
+
+/* ── Social buttons ─────────────────────────────────── */
+.ct-sidebar-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ct-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.ct-social-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ct-social-btn.yt {
+  background: #ff0000;
+  color: #fff;
+}
+
+.ct-social-btn.ig {
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff;
+}
+
+/* ── FAQ card ───────────────────────────────────────── */
+.ct-faq-card {
+  background: #fff;
+}
+
+.ct-faq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ct-faq-list li {
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ct-faq-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.ct-faq-list li strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.3rem;
+}
+
+.ct-faq-list li p {
+  font-size: 0.84rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Responsive tweaks ──────────────────────────────── */
+@media (max-width: 480px) {
+  .ct-hero-content {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .ct-form-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 1.1rem;
+  }
+
+  .ct-sidebar-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.1rem;
+  }
+
+  .ct-btn {
+    font-size: 0.8rem;
+    padding: 0.85rem 1.5rem;
   }
 }
