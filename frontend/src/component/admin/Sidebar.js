@@ -1,61 +1,109 @@
 import React from "react";
 import "./sidebar.css";
 import logo from "../../images/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { TreeView, TreeItem } from "@material-ui/lab";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import PostAddIcon from "@material-ui/icons/PostAdd";
-import AddIcon from "@material-ui/icons/Add";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PeopleIcon from "@material-ui/icons/People";
-import RateReviewIcon from "@material-ui/icons/RateReview";
+import {
+  FiChevronDown,
+  FiChevronRight,
+  FiGrid,
+  FiPackage,
+  FiPlusSquare,
+  FiShoppingBag,
+  FiUsers,
+  FiStar,
+} from "react-icons/fi";
 
 const Sidebar = () => {
+  const { pathname } = useLocation();
+  const { user }     = useSelector((s) => s.user);
+
+  const isActive = (path) => (pathname === path ? "sidebar-active" : "");
+
+  const initials = user?.name
+    ? user.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)
+    : "AD";
+
   return (
     <div className="sidebar">
-      <Link to="/">
-        <img src={logo} alt="Ecommerce" />
-      </Link>
-      <Link to="/admin/dashboard">
-        <p>
-          <DashboardIcon /> Dashboard
-        </p>
-      </Link>
-      
-        <TreeView
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ImportExportIcon />}
-        >
-          <TreeItem nodeId="1" label="Products">
-            <Link to="/admin/products">
-              <TreeItem nodeId="2" label="All" icon={<PostAddIcon />} />
-            </Link>
 
-            <Link to="/admin/product">
-              <TreeItem nodeId="3" label="Create" icon={<AddIcon />} />
-            </Link>
-          </TreeItem>
-        </TreeView>
-      
-      <Link to="/admin/orders">
-        <p>
-          <ListAltIcon />
-          Orders
-        </p>
+      {/* ── Logo ── */}
+      <Link to="/" className="sidebar-logo-area">
+        <img src={logo} alt="LUXE Admin" />
       </Link>
-      <Link to="/admin/users">
-        <p>
-          <PeopleIcon /> Users
-        </p>
+
+      {/* ── Main nav group ── */}
+      <span className="sidebar-group-label">Main</span>
+
+      <Link to="/admin/dashboard" className={isActive("/admin/dashboard")}>
+        <FiGrid size={16} />
+        Dashboard
       </Link>
-      <Link to="/admin/reviews">
-        <p>
-          <RateReviewIcon />
-          Reviews
-        </p>
+
+      {/* ── Catalogue group ── */}
+      <span className="sidebar-group-label">Catalogue</span>
+
+      <TreeView
+        defaultCollapseIcon={<FiChevronDown size={14} />}
+        defaultExpandIcon={<FiChevronRight size={14} />}
+        defaultExpanded={pathname.startsWith("/admin/product") ? ["products"] : []}
+      >
+        <TreeItem
+          nodeId="products"
+          label={
+            <span style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+              <FiPackage size={16} />
+              Products
+            </span>
+          }
+        >
+          <Link
+            to="/admin/products"
+            className={isActive("/admin/products")}
+            style={{ paddingLeft: "1.5rem" }}
+          >
+            <FiPackage size={14} />
+            All Products
+          </Link>
+          <Link
+            to="/admin/product"
+            className={isActive("/admin/product")}
+            style={{ paddingLeft: "1.5rem" }}
+          >
+            <FiPlusSquare size={14} />
+            Create Product
+          </Link>
+        </TreeItem>
+      </TreeView>
+
+      {/* ── Operations group ── */}
+      <span className="sidebar-group-label">Operations</span>
+
+      <Link to="/admin/orders" className={isActive("/admin/orders")}>
+        <FiShoppingBag size={16} />
+        Orders
       </Link>
+
+      <Link to="/admin/users" className={isActive("/admin/users")}>
+        <FiUsers size={16} />
+        Users
+      </Link>
+
+      <Link to="/admin/reviews" className={isActive("/admin/reviews")}>
+        <FiStar size={16} />
+        Reviews
+      </Link>
+
+      {/* ── User footer ── */}
+      <div className="sidebar-footer">
+        <div className="sidebar-footer-avatar">{initials}</div>
+        <div className="sidebar-footer-info">
+          <span className="sidebar-footer-name">{user?.name || "Admin"}</span>
+          <span className="sidebar-footer-role">Administrator</span>
+        </div>
+      </div>
+
     </div>
   );
 };

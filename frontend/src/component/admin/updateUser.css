@@ -1,18 +1,17 @@
 /* ================================================================
-   newProduct.css — Create Product Page  |  Modern SaaS Dashboard
+   updateUser.css — Update User Page  |  Modern SaaS Dashboard
    Matches dashboard.css / productList.css design language
    ================================================================ */
 
 /* ── Page shell ─────────────────────────────────────────────── */
-.np-layout {
+.uu-layout {
   display: flex;
   min-height: 100vh;
   background: #f4f5f7;
   font-family: "Inter", "Roboto", sans-serif;
 }
 
-/* ── Main content column ────────────────────────────────────── */
-.np-main {
+.uu-main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -23,7 +22,7 @@
 /* ================================================================
    TOP BAR
    ================================================================ */
-.np-topbar {
+.uu-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,13 +35,13 @@
   gap: 1rem;
 }
 
-.np-topbar-left {
+.uu-topbar-left {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.np-topbar-left h1 {
+.uu-topbar-left h1 {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.55rem;
   font-weight: 700;
@@ -51,13 +50,13 @@
   line-height: 1.2;
 }
 
-.np-topbar-left p {
+.uu-topbar-left p {
   font-size: 0.8rem;
   color: #9ca3af;
   margin: 0;
 }
 
-.np-topbar-right {
+.uu-topbar-right {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -65,7 +64,7 @@
 }
 
 /* Back button */
-.np-back-btn {
+.uu-back-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -77,21 +76,21 @@
   color: #6b7280;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
 
-.np-back-btn:hover {
+.uu-back-btn:hover {
   background: #f3f4f6;
   color: #111827;
   border-color: #d1d5db;
 }
 
-/* Publish / submit button */
-.np-submit-btn {
+/* Save button — indigo for "edit" context */
+.uu-submit-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: #0a0a0a;
+  background: #6366f1;
   color: #fff;
   font-size: 0.82rem;
   font-weight: 600;
@@ -99,61 +98,65 @@
   border-radius: 0.625rem;
   border: none;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  white-space: nowrap;
   font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
-.np-submit-btn:hover:not(:disabled) {
-  background: #1f1f1f;
+.uu-submit-btn:hover:not(:disabled) {
+  background: #5558e3;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
 }
 
-.np-submit-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
+.uu-submit-btn:active:not(:disabled) { transform: translateY(0); }
 
-.np-submit-btn:disabled {
-  opacity: 0.65;
+.uu-submit-btn:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* Spinner inside button */
-.np-spinner {
+/* Spinner */
+.uu-spinner {
   display: inline-block;
   width: 14px;
   height: 14px;
   border: 2px solid rgba(255, 255, 255, 0.35);
   border-top-color: #fff;
   border-radius: 50%;
-  animation: np-spin 0.7s linear infinite;
+  animation: uu-spin 0.7s linear infinite;
   flex-shrink: 0;
 }
 
-@keyframes np-spin {
-  to { transform: rotate(360deg); }
+@keyframes uu-spin { to { transform: rotate(360deg); } }
+
+/* ================================================================
+   LOADER
+   ================================================================ */
+.uu-loader-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
 }
 
 /* ================================================================
-   BODY
+   BODY + GRID
    ================================================================ */
-.np-body {
+.uu-body {
   padding: 2rem 2.5rem 3rem;
 }
 
-/* ================================================================
-   TWO-COLUMN GRID
-   ================================================================ */
-.np-form-grid {
+.uu-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 300px;
   gap: 1.75rem;
   align-items: start;
 }
 
-.np-col-left,
-.np-col-right {
+.uu-col-main,
+.uu-col-side {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -162,18 +165,18 @@
 /* ================================================================
    CARDS
    ================================================================ */
-.np-card {
+.uu-card {
   background: #fff;
   border: 1px solid #efefef;
   border-radius: 1.1rem;
   overflow: hidden;
 }
 
-.np-card-header {
+.uu-card-header {
   padding: 1.4rem 1.75rem 0;
 }
 
-.np-card-eyebrow {
+.uu-card-eyebrow {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -182,7 +185,7 @@
   margin: 0 0 0.25rem;
 }
 
-.np-card-title {
+.uu-card-title {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.05rem;
   font-weight: 700;
@@ -191,7 +194,7 @@
   line-height: 1.2;
 }
 
-.np-card-body {
+.uu-card-body {
   padding: 0 1.75rem 1.75rem;
   display: flex;
   flex-direction: column;
@@ -199,64 +202,39 @@
 }
 
 /* ================================================================
-   FIELD GROUPS
+   FORM FIELDS
    ================================================================ */
-.np-field-group {
+.uu-field-group {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
 }
 
-/* Side-by-side fields (Price + Stock) */
-.np-field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-/* Label */
-.np-label {
+.uu-label {
   font-size: 0.8rem;
   font-weight: 600;
   color: #374151;
-  letter-spacing: 0.01em;
 }
 
-.np-required {
-  color: #ef4444;
-  margin-left: 0.15rem;
-}
+.uu-required { color: #ef4444; margin-left: 0.15rem; }
 
-/* Input wrapper (icon + field) */
-.np-input-wrap {
+.uu-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.np-input-wrap--textarea {
-  align-items: flex-start;
-}
-
-/* Icon inside input */
-.np-input-icon {
+.uu-input-icon {
   position: absolute;
   left: 0.85rem;
   color: #9ca3af;
   pointer-events: none;
   display: flex;
   align-items: center;
-  flex-shrink: 0;
   z-index: 1;
 }
 
-.np-input-icon--top {
-  top: 0.72rem;
-  align-items: flex-start;
-}
-
-/* Input / select / textarea */
-.np-input {
+.uu-input {
   width: 100%;
   box-sizing: border-box;
   padding: 0.65rem 0.9rem 0.65rem 2.4rem;
@@ -267,31 +245,21 @@
   border: 1px solid #e5e7eb;
   border-radius: 0.625rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   -webkit-appearance: none;
   appearance: none;
 }
 
-.np-input::placeholder {
-  color: #b0b7c3;
-}
+.uu-input::placeholder { color: #b0b7c3; }
 
-.np-input:focus {
+.uu-input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
   background: #fff;
 }
 
-/* Textarea specifics */
-.np-textarea {
-  resize: vertical;
-  min-height: 110px;
-  padding-top: 0.65rem;
-  line-height: 1.55;
-}
-
 /* Select arrow */
-.np-select {
+.uu-select {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -299,138 +267,144 @@
   padding-right: 2.2rem;
 }
 
+/* Hint text below field */
+.uu-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  border: 1px solid #f0f0f2;
+  line-height: 1.4;
+}
+
+.uu-hint--warn {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+
 /* ================================================================
-   DRAG-AND-DROP UPLOAD ZONE
+   PROFILE SUMMARY CARD (right column)
    ================================================================ */
-.np-dropzone {
-  border: 2px dashed #e5e7eb;
-  border-radius: 0.875rem;
-  background: #fafafa;
-  padding: 2.25rem 1.5rem;
-  display: flex;
-  flex-direction: column;
+.uu-profile-body {
+  padding: 1.75rem !important;
+  gap: 1rem !important;
   align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
   text-align: center;
-  user-select: none;
 }
 
-.np-dropzone:hover,
-.np-dropzone--active {
-  border-color: #6366f1;
-  background: #eef2ff;
-}
-
-.np-dropzone-icon {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.75rem;
-  background: #eef2ff;
-  color: #6366f1;
+.uu-profile-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: #6366f1;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.25rem;
-  transition: background 0.2s ease;
+  flex-shrink: 0;
+  margin: 0 auto;
+  letter-spacing: 0.03em;
 }
 
-.np-dropzone:hover .np-dropzone-icon,
-.np-dropzone--active .np-dropzone-icon {
-  background: #c7d2fe;
+.uu-profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  width: 100%;
 }
 
-.np-dropzone-heading {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin: 0;
-}
-
-.np-dropzone-link {
-  color: #6366f1;
+.uu-profile-name {
+  font-size: 0.95rem;
   font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: #0a0a0a;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-.np-dropzone-sub {
-  font-size: 0.75rem;
+.uu-profile-email {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Role badge in profile card */
+.uu-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  margin-top: 0.25rem;
+}
+
+.uu-role-admin { background: #fef3c7; color: #b45309; }
+.uu-role-user  { background: #eef2ff; color: #4338ca; }
+
+/* ================================================================
+   META / ID CARD
+   ================================================================ */
+.uu-meta-card {
+  padding: 1.25rem 1.5rem !important;
+  gap: 0.35rem !important;
+}
+
+.uu-meta-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: #9ca3af;
   margin: 0;
 }
 
-/* ================================================================
-   IMAGE PREVIEW GRID
-   ================================================================ */
-.np-preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin-top: 0.25rem;
+.uu-meta-value {
+  font-size: 0.78rem;
+  color: #374151;
+  margin: 0;
+  word-break: break-all;
 }
 
-.np-preview-item {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: 0.625rem;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-  background: #f3f4f6;
-}
-
-.np-preview-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Remove button overlay */
-.np-preview-remove {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.18s ease;
-  padding: 0;
-}
-
-.np-preview-item:hover .np-preview-remove {
-  opacity: 1;
+.uu-mono {
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  color: #6b7280;
 }
 
 /* ================================================================
    TIPS CARD
    ================================================================ */
-.np-tips-card {
+.uu-tips-card {
   border: 1px solid #e0e7ff;
   background: #f5f3ff;
 }
 
-.np-tips-card .np-card-body {
-  padding: 1.25rem 1.5rem;
+.uu-tips-card .uu-card-body {
+  padding: 1.25rem 1.5rem !important;
 }
 
-.np-tips-title {
+.uu-tips-title {
   font-size: 0.82rem;
   font-weight: 700;
   color: #4338ca;
   margin: 0 0 0.65rem;
 }
 
-.np-tips-list {
+.uu-tips-list {
   margin: 0;
   padding-left: 1.1rem;
   display: flex;
@@ -439,7 +413,7 @@
   list-style: disc;
 }
 
-.np-tips-list li {
+.uu-tips-list li {
   font-size: 0.78rem;
   color: #5b21b6;
   line-height: 1.5;
@@ -448,51 +422,30 @@
 /* ================================================================
    RESPONSIVE
    ================================================================ */
-@media (max-width: 1100px) {
-  .np-form-grid {
-    grid-template-columns: 1fr 340px;
-  }
-}
-
 @media (max-width: 900px) {
-  .np-form-grid {
+  .uu-grid {
     grid-template-columns: 1fr;
   }
-
-  .np-col-right {
-    /* Move media below details on smaller screens */
-    order: -1;
+  .uu-col-side {
+    order: -1;        /* Profile summary above form on mobile */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
+  .uu-tips-card { grid-column: span 2; }
 }
 
 @media (max-width: 768px) {
-  .np-topbar {
-    padding: 1rem 1.25rem;
-  }
-
-  .np-body {
-    padding: 1.25rem 1rem 2rem;
-  }
-
-  .np-topbar-left h1 {
-    font-size: 1.25rem;
-  }
+  .uu-topbar { padding: 1rem 1.25rem; }
+  .uu-body   { padding: 1.25rem 1rem 2rem; }
+  .uu-topbar-left h1 { font-size: 1.25rem; }
+  .uu-topbar-left p  { display: none; }
 }
 
 @media (max-width: 600px) {
-  .np-layout {
-    flex-direction: column;
-  }
-
-  .np-field-row {
+  .uu-layout { flex-direction: column; }
+  .uu-col-side {
     grid-template-columns: 1fr;
   }
-
-  .np-preview-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .np-topbar-left > div > p {
-    display: none;
-  }
+  .uu-tips-card { grid-column: span 1; }
 }

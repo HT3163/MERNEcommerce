@@ -1,0 +1,37 @@
+/* ================================================================
+   updateProduct.css — Update Product Page overrides
+   Base styles come from newProduct.css
+   ================================================================ */
+
+/* Save button — indigo instead of black to signal "edit" context */
+.up-save-btn {
+  background: #6366f1 !important;
+}
+
+.up-save-btn:hover:not(:disabled) {
+  background: #5558e3 !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* ── Current images section label ───────────────────────────── */
+.up-current-images {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.up-images-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.up-images-label--new {
+  color: #6366f1;
+}

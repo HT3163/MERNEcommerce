@@ -1,0 +1,1576 @@
+/* ================================================================
+   LUXE — Premium Design System
+   File: design-system.css
+   Import once in index.js:  import './design-system.css';
+   ================================================================ */
+
+/* ================================================================
+   § 1  CSS CUSTOM PROPERTIES
+   ================================================================ */
+
+:root {
+
+  /* ── Brand / Accent ─────────────────────────────────────────── */
+  --color-indigo-50:   #eef2ff;
+  --color-indigo-100:  #e0e7ff;
+  --color-indigo-200:  #c7d2fe;
+  --color-indigo-300:  #a5b4fc;
+  --color-indigo-400:  #818cf8;
+  --color-indigo-500:  #6366f1;   /* primary accent */
+  --color-indigo-600:  #4f46e5;   /* hover state    */
+  --color-indigo-700:  #4338ca;
+  --color-indigo-800:  #3730a3;
+  --color-indigo-900:  #312e81;
+
+  /* ── Neutrals ───────────────────────────────────────────────── */
+  --color-white:       #ffffff;
+  --color-gray-50:     #f9fafb;
+  --color-gray-100:    #f3f4f6;
+  --color-gray-200:    #e5e7eb;
+  --color-gray-300:    #d1d5db;
+  --color-gray-400:    #9ca3af;
+  --color-gray-500:    #6b7280;
+  --color-gray-600:    #4b5563;
+  --color-gray-700:    #374151;
+  --color-gray-800:    #1f2937;
+  --color-gray-900:    #111827;
+  --color-black:       #0a0a0a;   /* near-black for headings */
+
+  /* ── Semantic / Status ──────────────────────────────────────── */
+  --color-success:     #22c55e;
+  --color-success-bg:  #f0fdf4;
+  --color-warning:     #f59e0b;
+  --color-warning-bg:  #fffbeb;
+  --color-error:       #ef4444;
+  --color-error-bg:    #fef2f2;
+  --color-info:        #3b82f6;
+  --color-info-bg:     #eff6ff;
+
+  /* ── Surface / Background ───────────────────────────────────── */
+  --color-bg:          #f4f5f7;   /* page background   */
+  --color-surface:     #ffffff;   /* card / panel      */
+  --color-surface-2:   #f9fafb;   /* subtle fill       */
+  --color-border:      #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  --font-sans:   'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif:  'Playfair Display', Georgia, serif;
+  --font-mono:   'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  --text-xs:     0.68rem;   /*  ~11px */
+  --text-sm:     0.8rem;    /*  ~13px */
+  --text-base:   0.925rem;  /*  ~15px */
+  --text-md:     1rem;      /*  ~16px */
+  --text-lg:     1.125rem;  /*  ~18px */
+  --text-xl:     1.25rem;   /*  ~20px */
+  --text-2xl:    1.5rem;    /*  ~24px */
+  --text-3xl:    1.875rem;  /*  ~30px */
+  --text-4xl:    2.25rem;   /*  ~36px */
+  --text-5xl:    3rem;      /*  ~48px */
+  --text-6xl:    3.75rem;   /*  ~60px */
+
+  --leading-tight:  1.15;
+  --leading-snug:   1.35;
+  --leading-normal: 1.6;
+  --leading-relaxed:1.75;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.1em;
+  --tracking-widest:  0.2em;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+  --fw-bold:    700;
+  --fw-black:   900;
+
+  /* ── Spacing (4-point scale) ────────────────────────────────── */
+  --space-0:    0;
+  --space-1:    0.25rem;   /*  4px */
+  --space-2:    0.5rem;    /*  8px */
+  --space-3:    0.75rem;   /* 12px */
+  --space-4:    1rem;      /* 16px */
+  --space-5:    1.25rem;   /* 20px */
+  --space-6:    1.5rem;    /* 24px */
+  --space-7:    1.75rem;   /* 28px */
+  --space-8:    2rem;      /* 32px */
+  --space-10:   2.5rem;    /* 40px */
+  --space-12:   3rem;      /* 48px */
+  --space-16:   4rem;      /* 64px */
+  --space-20:   5rem;      /* 80px */
+  --space-24:   6rem;      /* 96px */
+
+  /* ── Border Radius ──────────────────────────────────────────── */
+  --radius-xs:   0.25rem;   /*  4px — chips, tags        */
+  --radius-sm:   0.5rem;    /*  8px — small controls     */
+  --radius-md:   0.75rem;   /* 12px — inputs, small cards*/
+  --radius-lg:   1rem;      /* 16px — cards              */
+  --radius-xl:   1.5rem;    /* 24px — large panels       */
+  --radius-2xl:  2rem;      /* 32px — modals, drawers    */
+  --radius-full: 9999px;    /* pill / circle             */
+
+  /* ── Shadows ────────────────────────────────────────────────── */
+  --shadow-xs:  0 1px 2px  rgba(0,0,0,0.06);
+  --shadow-sm:  0 1px 4px  rgba(0,0,0,0.08),
+                0 1px 2px  rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.09),
+                0 1px 4px  rgba(0,0,0,0.05);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.11),
+                0 2px 8px  rgba(0,0,0,0.06);
+  --shadow-xl:  0 16px 48px rgba(0,0,0,0.13),
+                0 4px 16px rgba(0,0,0,0.07);
+  --shadow-2xl: 0 24px 64px rgba(0,0,0,0.16),
+                0 8px 24px rgba(0,0,0,0.09);
+  --shadow-inner: inset 0 2px 6px rgba(0,0,0,0.07);
+  --shadow-glow:  0 0 0 3px rgba(99,102,241,0.18);   /* focus ring */
+
+  /* ── Transitions ────────────────────────────────────────────── */
+  --ease-default:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:       cubic-bezier(0.4, 0, 1,   1);
+  --ease-out:      cubic-bezier(0, 0, 0.2,   1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:   150ms;
+  --duration-base:   220ms;
+  --duration-slow:   350ms;
+  --duration-slower: 500ms;
+
+  --transition-base:   var(--duration-base)   var(--ease-default);
+  --transition-fast:   var(--duration-fast)   var(--ease-default);
+  --transition-spring: var(--duration-slow)   var(--ease-spring);
+
+  /* ── Z-index scale ──────────────────────────────────────────── */
+  --z-below:   -1;
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 200;
+  --z-sticky:   400;
+  --z-header:   500;
+  --z-announce: 600;
+  --z-overlay:  700;
+  --z-modal:    800;
+  --z-toast:    900;
+  --z-top:      9999;
+
+  /* ── Layout ─────────────────────────────────────────────────── */
+  --container-sm:  640px;
+  --container-md:  768px;
+  --container-lg:  1024px;
+  --container-xl:  1280px;
+  --container-2xl: 1440px;
+}
+
+
+/* ================================================================
+   § 2  TYPOGRAPHY
+   ================================================================ */
+
+/* ── Reset & base ───────────────────────────────────────────────*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-gray-800);
+  background-color: var(--color-bg);
+}
+
+/* ── Display headings (serif, editorial) ────────────────────── */
+.ds-display-1 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-4xl), 7vw, var(--text-6xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-black);
+}
+
+.ds-display-2 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-black);
+}
+
+/* ── Section headings ───────────────────────────────────────── */
+.ds-h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-black);
+  margin: 0;
+}
+
+.ds-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-black);
+  margin: 0;
+}
+
+.ds-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.ds-h4 {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.ds-h5 {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-gray-800);
+  margin: 0;
+}
+
+/* ── Body text ──────────────────────────────────────────────── */
+.ds-body-lg {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-gray-700);
+}
+
+.ds-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-gray-700);
+}
+
+.ds-body-sm {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-gray-500);
+}
+
+/* ── Label / overline ───────────────────────────────────────── */
+.ds-overline {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-indigo-500);
+}
+
+.ds-label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-gray-700);
+}
+
+/* ── Caption / helper ───────────────────────────────────────── */
+.ds-caption {
+  font-size: var(--text-xs);
+  color: var(--color-gray-400);
+  line-height: var(--leading-normal);
+}
+
+/* ── Code ───────────────────────────────────────────────────── */
+.ds-code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-gray-100);
+  color: var(--color-indigo-600);
+  padding: 0.15em 0.45em;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-gray-200);
+}
+
+/* ── Utility modifiers ──────────────────────────────────────── */
+.ds-text-primary   { color: var(--color-indigo-500); }
+.ds-text-muted     { color: var(--color-gray-400); }
+.ds-text-success   { color: var(--color-success); }
+.ds-text-error     { color: var(--color-error); }
+.ds-text-warning   { color: var(--color-warning); }
+.ds-italic         { font-style: italic; }
+.ds-uppercase      { text-transform: uppercase; letter-spacing: var(--tracking-wider); }
+.ds-truncate       { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ds-text-center    { text-align: center; }
+.ds-text-right     { text-align: right; }
+
+
+/* ================================================================
+   § 3  BUTTONS
+   ================================================================ */
+
+/* ── Base ────────────────────────────────────────────────────── */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-full);
+  transition:
+    background     var(--transition-base),
+    color          var(--transition-base),
+    box-shadow     var(--transition-base),
+    transform      var(--transition-base),
+    border-color   var(--transition-base);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ds-btn:focus-visible {
+  box-shadow: var(--shadow-glow);
+}
+
+.ds-btn:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+.ds-btn:disabled,
+.ds-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Sizes ───────────────────────────────────────────────────── */
+.ds-btn-xs {
+  font-size: var(--text-xs);
+  padding: 0.35rem 0.85rem;
+}
+
+.ds-btn-sm {
+  font-size: var(--text-sm);
+  padding: 0.55rem 1.25rem;
+}
+
+.ds-btn-md {
+  font-size: var(--text-sm);
+  padding: 0.75rem 1.75rem;
+}
+
+.ds-btn-lg {
+  font-size: var(--text-base);
+  padding: 0.95rem 2.25rem;
+}
+
+.ds-btn-xl {
+  font-size: var(--text-md);
+  padding: 1.1rem 2.75rem;
+}
+
+/* ── Variants ────────────────────────────────────────────────── */
+
+/* Primary — dark pill */
+.ds-btn-primary {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+.ds-btn-primary:hover {
+  background: var(--color-gray-800);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Accent — indigo */
+.ds-btn-accent {
+  background: var(--color-indigo-500);
+  color: var(--color-white);
+}
+.ds-btn-accent:hover {
+  background: var(--color-indigo-600);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(99,102,241,0.35);
+}
+
+/* Secondary — white + border */
+.ds-btn-secondary {
+  background: var(--color-white);
+  color: var(--color-gray-800);
+  border: 1.5px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+.ds-btn-secondary:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-gray-300);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Ghost — transparent */
+.ds-btn-ghost {
+  background: transparent;
+  color: var(--color-gray-700);
+}
+.ds-btn-ghost:hover {
+  background: var(--color-gray-100);
+  color: var(--color-black);
+}
+
+/* Danger */
+.ds-btn-danger {
+  background: var(--color-error);
+  color: var(--color-white);
+}
+.ds-btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239,68,68,0.35);
+}
+
+/* Success */
+.ds-btn-success {
+  background: var(--color-success);
+  color: var(--color-white);
+}
+.ds-btn-success:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(34,197,94,0.35);
+}
+
+/* Outline accent */
+.ds-btn-outline {
+  background: transparent;
+  color: var(--color-indigo-500);
+  border: 1.5px solid var(--color-indigo-500);
+}
+.ds-btn-outline:hover {
+  background: var(--color-indigo-50);
+  transform: translateY(-2px);
+}
+
+/* ── Icon-only button ────────────────────────────────────────── */
+.ds-btn-icon {
+  padding: 0;
+  width:  2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.ds-btn-icon.ds-btn-sm { width: 2rem;   height: 2rem; }
+.ds-btn-icon.ds-btn-lg { width: 3rem;   height: 3rem; }
+
+/* ── Full-width ──────────────────────────────────────────────── */
+.ds-btn-block {
+  width: 100%;
+}
+
+/* ── Loading spinner inside button ──────────────────────────── */
+.ds-btn-loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent !important;
+}
+.ds-btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  color: var(--color-white);
+  animation: ds-spin 0.65s linear infinite;
+}
+
+@keyframes ds-spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ================================================================
+   § 4  INPUTS & FORMS
+   ================================================================ */
+
+/* ── Field wrapper ───────────────────────────────────────────── */
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ── Label ───────────────────────────────────────────────────── */
+.ds-field-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-gray-700);
+  letter-spacing: var(--tracking-wide);
+}
+
+.ds-field-label .ds-required {
+  color: var(--color-error);
+  margin-left: 2px;
+}
+
+/* ── Base input / textarea / select ─────────────────────────── */
+.ds-input,
+.ds-textarea,
+.ds-select {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--fw-regular);
+  color: var(--color-gray-900);
+  background: var(--color-surface-2);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.8rem 1.1rem;
+  width: 100%;
+  outline: none;
+  transition:
+    border-color  var(--transition-base),
+    background    var(--transition-base),
+    box-shadow    var(--transition-base);
+  box-sizing: border-box;
+}
+
+.ds-input::placeholder,
+.ds-textarea::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* Focus */
+.ds-input:focus,
+.ds-textarea:focus,
+.ds-select:focus {
+  border-color: var(--color-indigo-500);
+  background: var(--color-white);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Hover */
+.ds-input:hover:not(:focus),
+.ds-textarea:hover:not(:focus),
+.ds-select:hover:not(:focus) {
+  border-color: var(--color-gray-300);
+}
+
+/* ── Sizes ───────────────────────────────────────────────────── */
+.ds-input-sm { font-size: var(--text-sm); padding: 0.55rem 0.85rem; }
+.ds-input-lg { font-size: var(--text-md); padding: 1rem 1.25rem;   }
+
+/* ── Textarea ────────────────────────────────────────────────── */
+.ds-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Select ──────────────────────────────────────────────────── */
+.ds-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* ── Input with icon ─────────────────────────────────────────── */
+.ds-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ds-input-group .ds-input {
+  padding-left: 2.75rem;
+}
+
+.ds-input-group .ds-input-icon {
+  position: absolute;
+  left: 0.9rem;
+  color: var(--color-gray-400);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.ds-input-group .ds-input-icon-right {
+  position: absolute;
+  right: 0.9rem;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.ds-input-group .ds-input-icon-right:hover {
+  color: var(--color-gray-700);
+}
+
+/* ── States ──────────────────────────────────────────────────── */
+.ds-input-error,
+.ds-textarea-error,
+.ds-select-error {
+  border-color: var(--color-error) !important;
+  background: var(--color-error-bg);
+}
+
+.ds-input-error:focus,
+.ds-textarea-error:focus {
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.14);
+}
+
+.ds-input-success {
+  border-color: var(--color-success) !important;
+}
+
+.ds-input-success:focus {
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.14);
+}
+
+/* ── Helper / error text ─────────────────────────────────────── */
+.ds-field-helper {
+  font-size: var(--text-xs);
+  color: var(--color-gray-400);
+  line-height: var(--leading-normal);
+}
+
+.ds-field-error-msg {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  font-weight: var(--fw-medium);
+}
+
+/* ── Checkbox & Radio ────────────────────────────────────────── */
+.ds-check-group,
+.ds-radio-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.ds-check-group input[type="checkbox"],
+.ds-radio-group input[type="radio"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-indigo-500);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ds-check-group span,
+.ds-radio-group span {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  line-height: var(--leading-normal);
+}
+
+/* ── Form grid helpers ───────────────────────────────────────── */
+.ds-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.ds-form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 560px) {
+  .ds-form-row-2 { grid-template-columns: 1fr 1fr; }
+  .ds-form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+
+/* ================================================================
+   § 5  CARDS
+   ================================================================ */
+
+/* ── Base card ───────────────────────────────────────────────── */
+.ds-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition:
+    box-shadow   var(--transition-base),
+    transform    var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* ── Elevations ──────────────────────────────────────────────── */
+.ds-card-flat   { box-shadow: none; }
+.ds-card-raised { box-shadow: var(--shadow-sm); }
+.ds-card-lifted { box-shadow: var(--shadow-md); }
+
+/* ── Hover effect ────────────────────────────────────────────── */
+.ds-card-hover:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  border-color: var(--color-gray-300);
+}
+
+/* ── Card sections ───────────────────────────────────────────── */
+.ds-card-media {
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-gray-100);
+}
+
+.ds-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-default);
+}
+
+.ds-card-hover:hover .ds-card-media img {
+  transform: scale(1.04);
+}
+
+.ds-card-body {
+  padding: var(--space-6);
+}
+
+.ds-card-body-sm { padding: var(--space-4); }
+.ds-card-body-lg { padding: var(--space-8); }
+
+.ds-card-footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ── Product card (ecommerce specific) ──────────────────────── */
+.ds-card-product {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    box-shadow  var(--transition-base),
+    transform   var(--transition-base);
+}
+
+.ds-card-product:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-5px);
+}
+
+.ds-card-product-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-gray-50);
+}
+
+.ds-card-product-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-default);
+}
+
+.ds-card-product:hover .ds-card-product-media img {
+  transform: scale(1.06);
+}
+
+.ds-card-product-badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: var(--z-raised);
+}
+
+.ds-card-product-actions {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: var(--z-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  opacity: 0;
+  transform: translateX(8px);
+  transition:
+    opacity   var(--transition-base),
+    transform var(--transition-base);
+}
+
+.ds-card-product:hover .ds-card-product-actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ds-card-product-body {
+  padding: var(--space-5);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ds-card-product-name {
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-gray-900);
+  line-height: var(--leading-snug);
+}
+
+.ds-card-product-price {
+  font-size: var(--text-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+  margin-top: auto;
+}
+
+.ds-card-product-price-old {
+  font-size: var(--text-sm);
+  color: var(--color-gray-400);
+  text-decoration: line-through;
+  margin-left: var(--space-2);
+  font-weight: var(--fw-regular);
+}
+
+/* ── Info / panel card ───────────────────────────────────────── */
+.ds-card-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Stat card ───────────────────────────────────────────────── */
+.ds-card-stat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base);
+}
+
+.ds-card-stat:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.ds-card-stat-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-indigo-50);
+  color: var(--color-indigo-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ds-card-stat-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+  line-height: 1;
+}
+
+.ds-card-stat-label {
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+  margin-top: var(--space-1);
+}
+
+
+/* ================================================================
+   § 6  BADGES, TAGS & DIVIDERS
+   ================================================================ */
+
+/* ── Base badge ──────────────────────────────────────────────── */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Badge color variants */
+.ds-badge-default {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
+
+.ds-badge-primary {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.ds-badge-accent {
+  background: var(--color-indigo-100);
+  color: var(--color-indigo-700);
+}
+
+.ds-badge-success {
+  background: var(--color-success-bg);
+  color: #15803d;
+}
+
+.ds-badge-warning {
+  background: var(--color-warning-bg);
+  color: #b45309;
+}
+
+.ds-badge-error {
+  background: var(--color-error-bg);
+  color: #b91c1c;
+}
+
+.ds-badge-dark {
+  background: var(--color-gray-800);
+  color: var(--color-white);
+}
+
+/* Badge with dot indicator */
+.ds-badge-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── Pill tag (larger, softer) ───────────────────────────────── */
+.ds-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-gray-700);
+  cursor: default;
+  transition:
+    background     var(--transition-fast),
+    border-color   var(--transition-fast),
+    color          var(--transition-fast);
+}
+
+.ds-tag-interactive {
+  cursor: pointer;
+}
+
+.ds-tag-interactive:hover {
+  background: var(--color-indigo-50);
+  border-color: var(--color-indigo-300);
+  color: var(--color-indigo-700);
+}
+
+.ds-tag-active {
+  background: var(--color-indigo-50);
+  border-color: var(--color-indigo-400);
+  color: var(--color-indigo-700);
+  font-weight: var(--fw-semibold);
+}
+
+/* Tag close button */
+.ds-tag-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+  border: none;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.ds-tag-close:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.1);
+}
+
+/* ── Sale / promo badge (ecommerce) ─────────────────────────── */
+.ds-badge-sale {
+  background: var(--color-error);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.ds-badge-new {
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.ds-badge-hot {
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Dividers ────────────────────────────────────────────────── */
+.ds-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-6) 0;
+}
+
+.ds-divider-strong {
+  border-top-color: var(--color-border-strong);
+}
+
+/* Divider with label */
+.ds-divider-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+.ds-divider-label::before,
+.ds-divider-label::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+}
+
+.ds-divider-label span {
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+  white-space: nowrap;
+}
+
+/* Vertical divider */
+.ds-divider-v {
+  width: 1px;
+  height: 1em;
+  background: var(--color-border);
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 var(--space-3);
+}
+
+
+/* ================================================================
+   § 7  ANIMATIONS & TRANSITIONS
+   ================================================================ */
+
+/* ── Keyframes ───────────────────────────────────────────────── */
+@keyframes ds-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ds-fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-fadeDown {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-fadeLeft {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ds-fadeRight {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ds-scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ds-popIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ds-slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes ds-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ds-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+@keyframes ds-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes ds-shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+@keyframes ds-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes ds-ping {
+  75%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ── Animation utility classes ──────────────────────────────── */
+.ds-animate-fade-in    { animation: ds-fadeIn    var(--duration-base)   var(--ease-out) both; }
+.ds-animate-fade-up    { animation: ds-fadeUp    var(--duration-slow)   var(--ease-out) both; }
+.ds-animate-fade-down  { animation: ds-fadeDown  var(--duration-slow)   var(--ease-out) both; }
+.ds-animate-fade-left  { animation: ds-fadeLeft  var(--duration-slow)   var(--ease-out) both; }
+.ds-animate-fade-right { animation: ds-fadeRight var(--duration-slow)   var(--ease-out) both; }
+.ds-animate-scale-in   { animation: ds-scaleIn   var(--duration-slow)   var(--ease-spring) both; }
+.ds-animate-pop-in     { animation: ds-popIn     var(--duration-slow)   var(--ease-spring) both; }
+.ds-animate-slide-up   { animation: ds-slideUp   var(--duration-slow)   var(--ease-out) both; }
+.ds-animate-spin       { animation: ds-spin      0.7s  linear  infinite; }
+.ds-animate-pulse      { animation: ds-pulse     1.8s  ease    infinite; }
+.ds-animate-bounce     { animation: ds-bounce    1.2s  ease    infinite; }
+.ds-animate-marquee    { animation: ds-marquee   32s   linear  infinite; }
+
+/* ── Delay utilities ─────────────────────────────────────────── */
+.ds-delay-75  { animation-delay:  75ms; }
+.ds-delay-100 { animation-delay: 100ms; }
+.ds-delay-150 { animation-delay: 150ms; }
+.ds-delay-200 { animation-delay: 200ms; }
+.ds-delay-300 { animation-delay: 300ms; }
+.ds-delay-400 { animation-delay: 400ms; }
+.ds-delay-500 { animation-delay: 500ms; }
+.ds-delay-700 { animation-delay: 700ms; }
+
+/* ── Duration overrides ──────────────────────────────────────── */
+.ds-duration-fast   { animation-duration: var(--duration-fast);   }
+.ds-duration-base   { animation-duration: var(--duration-base);   }
+.ds-duration-slow   { animation-duration: var(--duration-slow);   }
+.ds-duration-slower { animation-duration: var(--duration-slower); }
+
+/* ── Skeleton / shimmer loader ──────────────────────────────── */
+.ds-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 0%,
+    var(--color-gray-200) 40%,
+    var(--color-gray-100) 80%
+  );
+  background-size: 600px 100%;
+  animation: ds-shimmer 1.4s ease infinite;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+.ds-skeleton-text  { height: 1em;    width: 100%; margin-bottom: var(--space-2); }
+.ds-skeleton-title { height: 1.4em;  width: 70%;  margin-bottom: var(--space-3); }
+.ds-skeleton-img   { height: 200px;  width: 100%; border-radius: var(--radius-lg); }
+.ds-skeleton-circle{ border-radius: var(--radius-full); }
+
+/* ── Ping dot (notification indicator) ─────────────────────── */
+.ds-ping-dot {
+  position: relative;
+  display: inline-flex;
+}
+
+.ds-ping-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-indigo-400);
+  animation: ds-ping 1.2s cubic-bezier(0,0,0.2,1) infinite;
+}
+
+/* ── Transition helpers ─────────────────────────────────────── */
+.ds-transition        { transition: all var(--transition-base); }
+.ds-transition-fast   { transition: all var(--transition-fast); }
+.ds-transition-spring { transition: all var(--transition-spring); }
+.ds-transition-none   { transition: none !important; }
+
+/* ── Hover lift ─────────────────────────────────────────────── */
+.ds-hover-lift {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.ds-hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Hover scale ─────────────────────────────────────────────── */
+.ds-hover-scale {
+  transition: transform var(--transition-spring);
+}
+.ds-hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* ── Paused on hover (for marquees) ─────────────────────────── */
+.ds-pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+
+/* ================================================================
+   § 8  SPACING & LAYOUT UTILITIES
+   ================================================================ */
+
+/* ── Container ───────────────────────────────────────────────── */
+.ds-container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.ds-container-sm  { max-width: var(--container-sm);  }
+.ds-container-md  { max-width: var(--container-md);  }
+.ds-container-lg  { max-width: var(--container-lg);  }
+.ds-container-2xl { max-width: var(--container-2xl); }
+
+@media (min-width: 768px) {
+  .ds-container { padding-inline: var(--space-10); }
+}
+
+/* ── Section padding ─────────────────────────────────────────── */
+.ds-section {
+  padding-block: var(--space-16);
+}
+
+.ds-section-sm { padding-block: var(--space-10); }
+.ds-section-lg { padding-block: var(--space-24); }
+
+/* ── Flexbox helpers ─────────────────────────────────────────── */
+.ds-flex         { display: flex; }
+.ds-inline-flex  { display: inline-flex; }
+.ds-flex-col     { flex-direction: column; }
+.ds-flex-wrap    { flex-wrap: wrap; }
+.ds-flex-center  { display: flex; align-items: center; justify-content: center; }
+.ds-flex-between { display: flex; align-items: center; justify-content: space-between; }
+.ds-items-center { align-items: center; }
+.ds-items-start  { align-items: flex-start; }
+.ds-items-end    { align-items: flex-end; }
+.ds-justify-center  { justify-content: center; }
+.ds-justify-between { justify-content: space-between; }
+.ds-justify-end     { justify-content: flex-end; }
+.ds-flex-1       { flex: 1; }
+.ds-flex-shrink-0{ flex-shrink: 0; }
+
+/* ── Grid helpers ────────────────────────────────────────────── */
+.ds-grid     { display: grid; }
+.ds-grid-2   { display: grid; grid-template-columns: repeat(2, 1fr); }
+.ds-grid-3   { display: grid; grid-template-columns: repeat(3, 1fr); }
+.ds-grid-4   { display: grid; grid-template-columns: repeat(4, 1fr); }
+
+/* Responsive product grids */
+.ds-grid-products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+
+@media (min-width: 640px)  { .ds-grid-products { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px)  { .ds-grid-products { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .ds-grid-products { grid-template-columns: repeat(4, 1fr); } }
+
+/* ── Gap utilities ───────────────────────────────────────────── */
+.ds-gap-1  { gap: var(--space-1); }
+.ds-gap-2  { gap: var(--space-2); }
+.ds-gap-3  { gap: var(--space-3); }
+.ds-gap-4  { gap: var(--space-4); }
+.ds-gap-5  { gap: var(--space-5); }
+.ds-gap-6  { gap: var(--space-6); }
+.ds-gap-8  { gap: var(--space-8); }
+.ds-gap-10 { gap: var(--space-10); }
+.ds-gap-12 { gap: var(--space-12); }
+
+/* ── Margin utilities ────────────────────────────────────────── */
+.ds-m-auto  { margin: auto; }
+.ds-mx-auto { margin-inline: auto; }
+.ds-mt-0    { margin-top: 0; }
+.ds-mt-4    { margin-top: var(--space-4); }
+.ds-mt-6    { margin-top: var(--space-6); }
+.ds-mt-8    { margin-top: var(--space-8); }
+.ds-mt-12   { margin-top: var(--space-12); }
+.ds-mb-4    { margin-bottom: var(--space-4); }
+.ds-mb-6    { margin-bottom: var(--space-6); }
+.ds-mb-8    { margin-bottom: var(--space-8); }
+
+/* ── Padding utilities ───────────────────────────────────────── */
+.ds-p-4   { padding: var(--space-4); }
+.ds-p-6   { padding: var(--space-6); }
+.ds-p-8   { padding: var(--space-8); }
+.ds-px-4  { padding-inline: var(--space-4); }
+.ds-px-6  { padding-inline: var(--space-6); }
+.ds-py-4  { padding-block: var(--space-4); }
+.ds-py-6  { padding-block: var(--space-6); }
+.ds-py-8  { padding-block: var(--space-8); }
+
+/* ── Width / height helpers ──────────────────────────────────── */
+.ds-w-full    { width: 100%; }
+.ds-h-full    { height: 100%; }
+.ds-min-h-screen { min-height: 100vh; }
+.ds-aspect-square   { aspect-ratio: 1 / 1; }
+.ds-aspect-video    { aspect-ratio: 16 / 9; }
+.ds-aspect-product  { aspect-ratio: 4 / 3; }
+
+/* ── Display helpers ─────────────────────────────────────────── */
+.ds-block        { display: block; }
+.ds-inline-block { display: inline-block; }
+.ds-hidden       { display: none; }
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Overflow ────────────────────────────────────────────────── */
+.ds-overflow-hidden { overflow: hidden; }
+.ds-overflow-auto   { overflow: auto; }
+
+/* ── Position helpers ────────────────────────────────────────── */
+.ds-relative { position: relative; }
+.ds-absolute { position: absolute; }
+.ds-fixed    { position: fixed; }
+.ds-sticky   { position: sticky; }
+.ds-inset-0  { inset: 0; }
+
+/* ── Border radius helpers ───────────────────────────────────── */
+.ds-rounded-sm   { border-radius: var(--radius-sm); }
+.ds-rounded-md   { border-radius: var(--radius-md); }
+.ds-rounded-lg   { border-radius: var(--radius-lg); }
+.ds-rounded-xl   { border-radius: var(--radius-xl); }
+.ds-rounded-full { border-radius: var(--radius-full); }
+
+/* ── Background helpers ──────────────────────────────────────── */
+.ds-bg-white    { background: var(--color-white); }
+.ds-bg-surface  { background: var(--color-surface); }
+.ds-bg-muted    { background: var(--color-gray-50); }
+.ds-bg-dark     { background: var(--color-black); }
+.ds-bg-accent   { background: var(--color-indigo-500); }
+
+/* ── Responsive visibility ───────────────────────────────────── */
+@media (max-width: 640px)  { .ds-hide-mobile  { display: none !important; } }
+@media (min-width: 641px)  { .ds-hide-desktop { display: none !important; } }
+@media (max-width: 1023px) { .ds-hide-tablet  { display: none !important; } }
+
+
+/* ================================================================
+   § 9  ICON UTILITIES & COMPONENT GUIDELINES
+   ================================================================ */
+
+/* ── Icon sizing ─────────────────────────────────────────────── */
+.ds-icon-xs  { width: 0.75rem;  height: 0.75rem;  flex-shrink: 0; }
+.ds-icon-sm  { width: 1rem;     height: 1rem;     flex-shrink: 0; }
+.ds-icon-md  { width: 1.25rem;  height: 1.25rem;  flex-shrink: 0; }
+.ds-icon-lg  { width: 1.5rem;   height: 1.5rem;   flex-shrink: 0; }
+.ds-icon-xl  { width: 2rem;     height: 2rem;     flex-shrink: 0; }
+.ds-icon-2xl { width: 2.5rem;   height: 2.5rem;   flex-shrink: 0; }
+.ds-icon-3xl { width: 3rem;     height: 3rem;     flex-shrink: 0; }
+
+/* ── Icon container (rounded background pill) ───────────────── */
+.ds-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-indigo-50);
+  color: var(--color-indigo-500);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.ds-icon-wrap-sm  { width: 2rem;    height: 2rem; }
+.ds-icon-wrap-md  { width: 2.75rem; height: 2.75rem; }
+.ds-icon-wrap-lg  { width: 3.5rem;  height: 3.5rem;  border-radius: var(--radius-lg); }
+
+.ds-icon-wrap-circle { border-radius: var(--radius-full); }
+
+/* Color variants for icon wraps */
+.ds-icon-wrap-success { background: var(--color-success-bg); color: #16a34a; }
+.ds-icon-wrap-warning { background: var(--color-warning-bg); color: #b45309; }
+.ds-icon-wrap-error   { background: var(--color-error-bg);   color: #b91c1c; }
+.ds-icon-wrap-dark    { background: var(--color-gray-900);   color: var(--color-white); }
+
+/* ================================================================
+   COMPONENT GUIDELINES
+   ================================================================
+
+   ┌─────────────────────────────────────────────────────────────┐
+   │  FONTS (load in public/index.html)                          │
+   │                                                             │
+   │  <link rel="preconnect" href="https://fonts.googleapis.com">│
+   │  <link href="https://fonts.googleapis.com/css2?           │
+   │    family=Inter:wght@400;500;600;700&                      │
+   │    family=Playfair+Display:ital,wght@0,700;1,700&          │
+   │    display=swap" rel="stylesheet">                         │
+   └─────────────────────────────────────────────────────────────┘
+
+   ┌─────────────────────────────────────────────────────────────┐
+   │  IMPORT (add once at top of src/index.js)                   │
+   │                                                             │
+   │  import './design-system.css';                              │
+   └─────────────────────────────────────────────────────────────┘
+
+   ──────────────────────────────────────────────────────────────
+   COLOR USAGE GUIDE
+   ──────────────────────────────────────────────────────────────
+   Primary text         →  var(--color-gray-900)
+   Secondary text       →  var(--color-gray-500)
+   Headings             →  var(--color-black)  + font-serif
+   Page background      →  var(--color-bg)
+   Card / panel         →  var(--color-surface)
+   Subtle fill          →  var(--color-surface-2)
+   Borders              →  var(--color-border)
+   Primary action       →  .ds-btn-primary  (near-black pill)
+   Accent / highlight   →  var(--color-indigo-500)  #6366f1
+   Destructive          →  var(--color-error)  #ef4444
+   Success              →  var(--color-success)  #22c55e
+
+   ──────────────────────────────────────────────────────────────
+   BUTTON USAGE GUIDE
+   ──────────────────────────────────────────────────────────────
+   Primary CTA          →  ds-btn  ds-btn-primary  ds-btn-lg
+   Accent CTA           →  ds-btn  ds-btn-accent   ds-btn-lg
+   Secondary action     →  ds-btn  ds-btn-secondary ds-btn-md
+   Destructive          →  ds-btn  ds-btn-danger    ds-btn-md
+   Subtle / ghost       →  ds-btn  ds-btn-ghost     ds-btn-sm
+   Icon-only            →  ds-btn  ds-btn-secondary ds-btn-icon
+
+   ──────────────────────────────────────────────────────────────
+   CARD USAGE GUIDE
+   ──────────────────────────────────────────────────────────────
+   Product listing      →  ds-card-product
+   Info / about panel   →  ds-card-panel
+   Dashboard stat       →  ds-card-stat
+   Generic content      →  ds-card  ds-card-lifted  ds-card-hover
+
+   ──────────────────────────────────────────────────────────────
+   SPACING GUIDE  (4-point scale)
+   ──────────────────────────────────────────────────────────────
+   Component internals  →  --space-2  to  --space-4   (8–16px)
+   Between siblings     →  --space-4  to  --space-6   (16–24px)
+   Section padding      →  --space-10 to  --space-16  (40–64px)
+   Page sections        →  .ds-section  or  .ds-section-lg
+
+   ──────────────────────────────────────────────────────────────
+   TYPOGRAPHY GUIDE
+   ──────────────────────────────────────────────────────────────
+   Hero headings        →  .ds-display-1  /  .ds-display-2  (serif)
+   Page titles          →  .ds-h1  /  .ds-h2               (serif)
+   Section titles       →  .ds-h3  /  .ds-h4               (sans)
+   Body copy            →  .ds-body  or  .ds-body-lg
+   Subtle text          →  .ds-body-sm  /  .ds-caption
+   Category labels      →  .ds-overline                    (indigo)
+   Form labels          →  .ds-label
+
+   ──────────────────────────────────────────────────────────────
+   ANIMATION GUIDE
+   ──────────────────────────────────────────────────────────────
+   Page section entry   →  ds-animate-fade-up  +  ds-delay-100..500
+   Hero text            →  ds-animate-fade-up  ds-duration-slow
+   Modal / drawer       →  ds-animate-slide-up  or  ds-animate-scale-in
+   Notification icon    →  ds-ping-dot
+   Loading skeleton     →  ds-skeleton  ds-skeleton-text / img
+   Marquee ticker       →  ds-animate-marquee  ds-pause-on-hover
+
+   ──────────────────────────────────────────────────────────────
+   ICON GUIDE  (react-icons / feather)
+   ──────────────────────────────────────────────────────────────
+   Inline with text     →  size={16}  className="ds-icon-sm"
+   Button icon          →  size={16}  className="ds-icon-sm"
+   Card icon            →  size={20}  wrapped in  .ds-icon-wrap-md
+   Feature icon         →  size={24}  wrapped in  .ds-icon-wrap-lg
+   Hero / empty state   →  size={48}  className="ds-icon-3xl"
+
+   ================================================================ */

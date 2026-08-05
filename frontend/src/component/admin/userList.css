@@ -1,18 +1,17 @@
 /* ================================================================
-   productList.css — Admin Products Page  |  Modern SaaS Dashboard
-   Matches dashboard.css design language
+   userList.css — Admin Users Page  |  Modern SaaS Dashboard
+   Matches dashboard.css / productList.css / orderList.css
    ================================================================ */
 
-/* ── Page shell (sidebar + main) ───────────────────────────── */
-.pl-layout {
+/* ── Page shell ─────────────────────────────────────────────── */
+.ul-layout {
   display: flex;
   min-height: 100vh;
   background: #f4f5f7;
   font-family: "Inter", "Roboto", sans-serif;
 }
 
-/* ── Main content column ────────────────────────────────────── */
-.pl-main {
+.ul-main {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -23,7 +22,7 @@
 /* ================================================================
    TOP BAR
    ================================================================ */
-.pl-topbar {
+.ul-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,7 +35,7 @@
   gap: 1rem;
 }
 
-.pl-topbar-left h1 {
+.ul-topbar-left h1 {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.55rem;
   font-weight: 700;
@@ -45,51 +44,16 @@
   line-height: 1.2;
 }
 
-.pl-topbar-left p {
+.ul-topbar-left p {
   font-size: 0.8rem;
   color: #9ca3af;
   margin: 0;
 }
 
-.pl-topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
-}
-
-/* Add Product CTA button */
-.pl-add-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: #0a0a0a;
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0.6rem 1.1rem;
-  border-radius: 0.625rem;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  white-space: nowrap;
-}
-
-.pl-add-btn:hover {
-  background: #1f1f1f;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-}
-
-.pl-add-btn:active {
-  transform: translateY(0);
-}
-
 /* ================================================================
    BODY
    ================================================================ */
-.pl-body {
+.ul-body {
   padding: 2rem 2.5rem 3rem;
   display: flex;
   flex-direction: column;
@@ -99,13 +63,13 @@
 /* ================================================================
    STAT CARDS
    ================================================================ */
-.pl-stats {
+.ul-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
 }
 
-.pl-stat-card {
+.ul-stat-card {
   background: #fff;
   border: 1px solid #efefef;
   border-radius: 1.1rem;
@@ -117,12 +81,12 @@
   cursor: default;
 }
 
-.pl-stat-card:hover {
+.ul-stat-card:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
   transform: translateY(-3px);
 }
 
-.pl-stat-icon {
+.ul-stat-icon {
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 0.75rem;
@@ -130,16 +94,11 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
 }
 
-.pl-stat-info {
-  flex: 1;
-  min-width: 0;
-}
+.ul-stat-info { flex: 1; min-width: 0; }
 
-.pl-stat-label {
+.ul-stat-label {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -148,7 +107,7 @@
   margin: 0 0 0.35rem;
 }
 
-.pl-stat-value {
+.ul-stat-value {
   font-size: 1.65rem;
   font-weight: 700;
   color: #0a0a0a;
@@ -156,23 +115,17 @@
   margin: 0;
 }
 
-/* Slightly smaller value text for long strings like currency */
-.pl-stat-value--sm {
-  font-size: 1.25rem;
-}
-
 /* ================================================================
    TABLE CARD
    ================================================================ */
-.pl-table-card {
+.ul-table-card {
   background: #fff;
   border: 1px solid #efefef;
   border-radius: 1.1rem;
   overflow: hidden;
 }
 
-/* Table card header row */
-.pl-table-header {
+.ul-table-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -182,7 +135,7 @@
   flex-wrap: wrap;
 }
 
-.pl-table-eyebrow {
+.ul-table-eyebrow {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -191,7 +144,7 @@
   margin: 0 0 0.25rem;
 }
 
-.pl-table-title {
+.ul-table-title {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.1rem;
   font-weight: 700;
@@ -200,24 +153,21 @@
   line-height: 1.2;
 }
 
-/* ================================================================
-   SEARCH INPUT
-   ================================================================ */
-.pl-search-wrap {
+/* ── Search ──────────────────────────────────────────────────── */
+.ul-search-wrap {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.pl-search-icon {
+.ul-search-icon {
   position: absolute;
   left: 0.75rem;
   color: #9ca3af;
   pointer-events: none;
-  flex-shrink: 0;
 }
 
-.pl-search-input {
+.ul-search-input {
   padding: 0.55rem 0.85rem 0.55rem 2.25rem;
   font-size: 0.83rem;
   font-family: inherit;
@@ -226,15 +176,13 @@
   border: 1px solid #e5e7eb;
   border-radius: 0.625rem;
   outline: none;
-  width: 240px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 260px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.pl-search-input::placeholder {
-  color: #b0b7c3;
-}
+.ul-search-input::placeholder { color: #b0b7c3; }
 
-.pl-search-input:focus {
+.ul-search-input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
   background: #fff;
@@ -243,36 +191,33 @@
 /* ================================================================
    DATAGRID OVERRIDES
    ================================================================ */
-.pl-datagrid {
+.ul-datagrid {
   border: none !important;
   border-radius: 0 !important;
   font-family: "Inter", "Roboto", sans-serif !important;
 }
 
-/* Remove all cell / column borders */
-.pl-datagrid .MuiDataGrid-cell,
-.pl-datagrid .MuiDataGrid-columnSeparator,
-.pl-datagrid .MuiDataGrid-columnsContainer {
+.ul-datagrid .MuiDataGrid-cell,
+.ul-datagrid .MuiDataGrid-columnSeparator,
+.ul-datagrid .MuiDataGrid-columnsContainer {
   border: none !important;
   outline: none !important;
 }
 
-/* Cell text */
-.pl-datagrid .MuiDataGrid-cell {
+.ul-datagrid .MuiDataGrid-cell {
   font-size: 0.875rem;
   color: #374151;
   display: flex;
   align-items: center;
 }
 
-/* Column header bar */
-.pl-datagrid .MuiDataGrid-columnHeaders,
-.pl-datagrid .MuiDataGrid-columnHeader {
+.ul-datagrid .MuiDataGrid-columnHeaders,
+.ul-datagrid .MuiDataGrid-columnHeader {
   background: #f9fafb !important;
   border-bottom: 1px solid #f0f0f2 !important;
 }
 
-.pl-datagrid .MuiDataGrid-columnHeaderTitle {
+.ul-datagrid .MuiDataGrid-columnHeaderTitle {
   font-size: 0.7rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.12em !important;
@@ -280,41 +225,27 @@
   color: #9ca3af !important;
 }
 
-/* Sort icons in header */
-.pl-datagrid .MuiDataGrid-iconButtonContainer button,
-.pl-datagrid .MuiDataGrid-menuIcon button {
+.ul-datagrid .MuiDataGrid-iconButtonContainer button,
+.ul-datagrid .MuiDataGrid-menuIcon button {
   color: #d1d5db !important;
 }
 
-/* Row hover */
-.pl-datagrid .MuiDataGrid-row:hover {
-  background: #fafafa !important;
-}
+.ul-datagrid .MuiDataGrid-row:hover { background: #fafafa !important; }
 
-/* Selected row */
-.pl-datagrid .MuiDataGrid-row.Mui-selected,
-.pl-datagrid .MuiDataGrid-row.Mui-selected:hover {
-  background: #eef2ff !important;
-}
+.ul-datagrid .MuiDataGrid-row.Mui-selected,
+.ul-datagrid .MuiDataGrid-row.Mui-selected:hover { background: #eef2ff !important; }
 
-/* Row divider */
-.pl-datagrid .MuiDataGrid-row {
-  border-bottom: 1px solid #f9fafb !important;
-}
+.ul-datagrid .MuiDataGrid-row { border-bottom: 1px solid #f9fafb !important; }
 
-/* Footer / pagination */
-.pl-datagrid .MuiDataGrid-footerContainer {
+.ul-datagrid .MuiDataGrid-footerContainer {
   border-top: 1px solid #f3f4f6 !important;
   background: #fff;
-  font-size: 0.8rem;
-  color: #6b7280;
   padding: 0 0.5rem;
 }
 
-/* Pagination button colours */
-.pl-datagrid .MuiTablePagination-root,
-.pl-datagrid .MuiTablePagination-caption,
-.pl-datagrid .MuiTablePagination-select {
+.ul-datagrid .MuiTablePagination-root,
+.ul-datagrid .MuiTablePagination-caption,
+.ul-datagrid .MuiTablePagination-select {
   font-size: 0.78rem !important;
   color: #6b7280 !important;
 }
@@ -323,33 +254,36 @@
    CUSTOM CELL CONTENT
    ================================================================ */
 
-/* Product ID (monospace) */
-.pl-product-id {
+/* User ID */
+.ul-user-id {
   font-family: "JetBrains Mono", "Courier New", monospace;
   font-size: 0.75rem;
   color: #9ca3af;
 }
 
-/* Product name cell (icon + text) */
-.pl-product-name-cell {
+/* Avatar + Name cell */
+.ul-name-cell {
   display: flex;
   align-items: center;
   gap: 0.65rem;
 }
 
-.pl-product-icon {
-  width: 1.85rem;
-  height: 1.85rem;
-  border-radius: 0.45rem;
-  background: #f3f4f6;
+.ul-avatar {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: #6366f1;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #6b7280;
+  letter-spacing: 0.02em;
 }
 
-.pl-product-name {
+.ul-name {
   font-size: 0.875rem;
   font-weight: 500;
   color: #111827;
@@ -358,17 +292,14 @@
   text-overflow: ellipsis;
 }
 
-/* Price */
-.pl-price {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #0a0a0a;
+/* Email */
+.ul-email {
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
-/* ================================================================
-   STOCK BADGES
-   ================================================================ */
-.pl-badge {
+/* ── Role badges ─────────────────────────────────────────────── */
+.ul-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -379,31 +310,17 @@
   white-space: nowrap;
 }
 
-.pl-badge-in {
-  background: #f0fdf4;
-  color: #16a34a;
-}
+.ul-badge-admin { background: #fef3c7; color: #b45309; }
+.ul-badge-user  { background: #eef2ff; color: #4338ca; }
 
-.pl-badge-low {
-  background: #fffbeb;
-  color: #b45309;
-}
-
-.pl-badge-out {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-/* ================================================================
-   ACTION BUTTONS
-   ================================================================ */
-.pl-actions {
+/* ── Action buttons ──────────────────────────────────────────── */
+.ul-actions {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.pl-action-btn {
+.ul-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -415,19 +332,18 @@
   color: #6b7280;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
-    box-shadow 0.18s ease;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
   flex-shrink: 0;
 }
 
-.pl-action-edit:hover {
+.ul-action-edit:hover {
   background: #eef2ff;
   color: #6366f1;
   border-color: #c7d2fe;
   box-shadow: 0 2px 6px rgba(99, 102, 241, 0.15);
 }
 
-.pl-action-delete:hover {
+.ul-action-delete:hover {
   background: #fef2f2;
   color: #dc2626;
   border-color: #fecaca;
@@ -437,57 +353,24 @@
 /* ================================================================
    RESPONSIVE
    ================================================================ */
-@media (max-width: 1200px) {
-  .pl-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
+@media (max-width: 900px) {
+  .ul-stats { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .pl-topbar {
-    padding: 1rem 1.25rem;
-  }
-
-  .pl-body {
-    padding: 1.25rem 1rem 2rem;
-    gap: 1.25rem;
-  }
-
-  .pl-topbar-left h1 {
-    font-size: 1.25rem;
-  }
-
-  .pl-search-input {
-    width: 180px;
-  }
+  .ul-topbar { padding: 1rem 1.25rem; }
+  .ul-body   { padding: 1.25rem 1rem 2rem; gap: 1.25rem; }
+  .ul-topbar-left h1 { font-size: 1.25rem; }
+  .ul-search-input { width: 190px; }
 }
 
 @media (max-width: 600px) {
-  .pl-layout {
-    flex-direction: column;
-  }
-
-  .pl-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .pl-table-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  .pl-search-input {
-    width: 100%;
-  }
-
-  .pl-search-wrap {
-    width: 100%;
-  }
+  .ul-layout { flex-direction: column; }
+  .ul-stats  { grid-template-columns: 1fr 1fr; }
+  .ul-table-header { flex-direction: column; align-items: flex-start; }
+  .ul-search-wrap, .ul-search-input { width: 100%; }
 }
 
-@media (max-width: 480px) {
-  .pl-datagrid .MuiDataGrid-cell {
-    font-size: 0.8rem;
-  }
+@media (max-width: 400px) {
+  .ul-stats { grid-template-columns: 1fr; }
 }

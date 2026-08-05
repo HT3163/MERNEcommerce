@@ -1,38 +1,32 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./UpdatePassword.css";
 import Loader from "../layout/Loader/Loader";
+import { FiLock, FiUnlock, FiKey } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, updatePassword } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
 import MetaData from "../layout/MetaData";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import LockIcon from "@material-ui/icons/Lock";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useNavigate } from "react-router-dom";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const alert = useAlert();
+  const alert    = useAlert();
 
-  const { error, isUpdated, loading } = useSelector((state) => state.profile);
+  const { error, isUpdated, loading } = useSelector((s) => s.profile);
 
-
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [oldPassword,     setOldPassword]     = useState("");
+  const [newPassword,     setNewPassword]     = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const updatePasswordSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const myForm = new FormData();
-
-    myForm.set("oldPassword", oldPassword);
-    myForm.set("newPassword", newPassword);
-    myForm.set("confirmPassword", confirmPassword);
-
-    dispatch(updatePassword(myForm));
+    const form = new FormData();
+    form.set("oldPassword",     oldPassword);
+    form.set("newPassword",     newPassword);
+    form.set("confirmPassword", confirmPassword);
+    dispatch(updatePassword(form));
   };
 
   useEffect(() => {
@@ -40,15 +34,10 @@ const UpdatePassword = () => {
       alert.error(error);
       dispatch(clearErrors());
     }
-
     if (isUpdated) {
-      alert.success("Profile Updated Successfully");
-
+      alert.success("Password changed successfully");
       navigate("/account");
-
-      dispatch({
-        type: UPDATE_PASSWORD_RESET,
-      });
+      dispatch({ type: UPDATE_PASSWORD_RESET });
     }
   }, [dispatch, error, alert, navigate, isUpdated]);
 
@@ -58,28 +47,31 @@ const UpdatePassword = () => {
         <Loader />
       ) : (
         <Fragment>
-          <MetaData title="Change Password" />
-          <div className="updatePasswordContainer">
-            <div className="updatePasswordBox">
-              <h2 className="updatePasswordHeading">Update Profile</h2>
+          <MetaData title="Change Password — LUXE" />
 
-              <form
-                className="updatePasswordForm"
-                onSubmit={updatePasswordSubmit}
-              >
-                <div className="loginPassword">
-                  <VpnKeyIcon />
+          <div className="upw-page">
+            <div className="upw-card">
+
+              <h2 className="upw-heading">Change Password</h2>
+              <p className="upw-subtext">Keep your account secure with a strong password</p>
+
+              <form className="upw-form" onSubmit={handleSubmit}>
+
+                {/* Current password */}
+                <div className="upw-input-group">
+                  <span className="upw-icon"><FiKey size={16} /></span>
                   <input
                     type="password"
-                    placeholder="Old Password"
+                    placeholder="Current Password"
                     required
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                   />
                 </div>
 
-                <div className="loginPassword">
-                  <LockOpenIcon />
+                {/* New password */}
+                <div className="upw-input-group">
+                  <span className="upw-icon"><FiUnlock size={16} /></span>
                   <input
                     type="password"
                     placeholder="New Password"
@@ -88,22 +80,25 @@ const UpdatePassword = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
-                <div className="loginPassword">
-                  <LockIcon />
+                <p className="upw-hint">Minimum 8 characters recommended</p>
+
+                {/* Confirm password */}
+                <div className="upw-input-group">
+                  <span className="upw-icon"><FiLock size={16} /></span>
                   <input
                     type="password"
-                    placeholder="Confirm Password"
+                    placeholder="Confirm New Password"
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
-                <input
-                  type="submit"
-                  value="Change"
-                  className="updatePasswordBtn"
-                />
+
+                <button type="submit" className="upw-submit-btn">
+                  Update Password
+                </button>
               </form>
+
             </div>
           </div>
         </Fragment>

@@ -10,9 +10,9 @@ import Products from './component/Product/Products.js'
 import Search from './component/Product/Search.js'
 import LoginSignUp from './component/User/LoginSignUp';
 import Profile from './component/User/Profile.js'
+import CustomerDashboard from './component/User/Dashboard.js'
 import store from './store.js'
 import { loadUser } from './actions/userAction';
-import UserOptions from './component/layout/Header/UserOptions.js'
 import { useSelector } from 'react-redux';
 import ProtectedRoute from './component/Route/ProtectedRoute';
 import UpdateProfile from './component/User/UpdateProfile';
@@ -42,7 +42,6 @@ import ProductReviews from './component/admin/ProductReviews';
 import NotFound from './component/layout/Not Found/NotFound.js';
 import About from './component/layout/About/About.js'
 import Contact from './component/layout/Contact/Contact.js'
-import { CgWindows } from 'react-icons/cg';
 
 function App() {
 
@@ -83,8 +82,6 @@ function App() {
         <Router>
             <Header />
 
-            {isAuthenticated && <UserOptions user={user} />}
-
             {stripeApiKey && (
                 <Elements stripe={loadStripe(stripeApiKey)} >
                     <Routes>
@@ -108,7 +105,7 @@ function App() {
             
             
             
-            <Route exact path='/account' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route exact path='/account' element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
             <Route exact path="/me/update" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />
             <Route exact path="/password/update" element={<ProtectedRoute><UpdatePassword /></ProtectedRoute>} />
             <Route exact path="/password/forgot/" element={<ProtectedRoute><ForgotPassword /></ProtectedRoute>} />
@@ -121,8 +118,7 @@ function App() {
             <Route exact path="/order/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
 
 
-            {isAuthenticated && user.role === "admin" ? <Route exact path="/admin/dashboard" element={<Dashboard />} /> : <Route exact path="/login" element={<LoginSignUp/>} />}
-            <Route exact path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
+            <Route exact path="/admin/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
             <Route exact path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
             <Route exact path="/admin/product" element={<ProtectedRoute isAdmin={true}><NewProduct /></ProtectedRoute>}/>
             <Route exact path="/admin/product/:id" element={<ProtectedRoute isAdmin={true}><UpdateProduct /></ProtectedRoute>} />

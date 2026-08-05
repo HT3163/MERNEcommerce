@@ -1,19 +1,24 @@
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ isAdmin, children }) => {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
-  let hame = children
-  if(isAuthenticated === false){
-    hame = <Navigate to={"/login"} />
-  }
-  if(isAdmin === true && (user && user.role !== 'admin')){
-    hame = <Navigate to={"/login"} />
+
+  // Still fetching user — don't redirect yet
+  if (loading) return null;
+
+  // Not logged in → send to login
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
-  return <Fragment>{hame}</Fragment>
+  // Logged in but not admin when admin is required → send to account
+  if (isAdmin && user?.role !== "admin") {
+    return <Navigate to="/account" replace />;
+  }
 
+  return <Fragment>{children}</Fragment>;
 };
 
 export default ProtectedRoute;
