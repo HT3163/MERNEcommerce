@@ -164,7 +164,6 @@ exports.getUserDetails = catchAsyncErrors(async(req,res,next)=> {
 
 // update User 
 exports.updatePassword = catchAsyncErrors(async(req,res,next)=> {
-    console.log(req.user._id)
 
     const user = await User.findById(req.user.id).select("+password");
 
@@ -194,7 +193,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
       email: req.body.email,
     };
 
-    if(req.body.avatar !== ''){
+    if(req.body.avatar && req.body.avatar !== '' && req.body.avatar !== 'undefined'){
         const user = await User.findById(req.user.id);
         const imageId = user.avatar.public_id;
 
