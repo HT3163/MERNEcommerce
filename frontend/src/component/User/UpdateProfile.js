@@ -1,11 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./UpdateProfile.css";
-<<<<<<< HEAD
 import { FiUser, FiMail, FiUpload, FiCheckCircle, FiAlertCircle, FiLoader } from "react-icons/fi";
-=======
-import Loader from "../layout/Loader/Loader";
-import { FiUser, FiMail, FiUpload } from "react-icons/fi";
->>>>>>> 9a45c50 (Programmingwithht (#2))
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, updateProfile, loadUser } from "../../actions/userAction";
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
@@ -13,7 +8,6 @@ import MetaData from "../layout/MetaData";
 import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
-<<<<<<< HEAD
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -39,21 +33,6 @@ const UpdateProfile = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-=======
-  const navigate  = useNavigate();
-  const dispatch  = useDispatch();
-  const alert     = useAlert();
-
-  const { user }                        = useSelector((s) => s.user);
-  const { error, isUpdated, loading }   = useSelector((s) => s.profile);
-
-  const [name,          setName]          = useState("");
-  const [email,         setEmail]         = useState("");
-  const [avatar,        setAvatar]        = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
     const form = new FormData();
     form.set("name", name);
     form.set("email", email);
@@ -62,7 +41,6 @@ const UpdateProfile = () => {
   };
 
   const handleAvatarChange = (e) => {
->>>>>>> 9a45c50 (Programmingwithht (#2))
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -70,11 +48,8 @@ const UpdateProfile = () => {
         setAvatar(reader.result);
       }
     };
-<<<<<<< HEAD
     reader.readAsDataURL(file);
-=======
     reader.readAsDataURL(e.target.files[0]);
->>>>>>> 9a45c50 (Programmingwithht (#2))
   };
 
   useEffect(() => {
@@ -83,18 +58,14 @@ const UpdateProfile = () => {
       setEmail(user.email);
       setAvatarPreview(user.avatar?.url || "/Profile.png");
     }
-<<<<<<< HEAD
   }, [user]);
 
   useEffect(() => {
-=======
->>>>>>> 9a45c50 (Programmingwithht (#2))
     if (error) {
       setStatusMsg({ type: "error", text: error });
       dispatch(clearErrors());
     }
     if (isUpdated) {
-<<<<<<< HEAD
       setStatusMsg({ type: "success", text: "Profile updated successfully!" });
       dispatch(loadUser());
       dispatch({ type: UPDATE_PROFILE_RESET });
@@ -132,9 +103,6 @@ const UpdateProfile = () => {
               >
                 ×
               </button>
-=======
-      alert.success("Profile updated successfully");
-      dispatch(loadUser());
       navigate("/account");
       dispatch({ type: UPDATE_PROFILE_RESET });
     }
@@ -209,7 +177,7 @@ const UpdateProfile = () => {
                 </button>
               </form>
 
->>>>>>> 9a45c50 (Programmingwithht (#2))
+
             </div>
           )}
 

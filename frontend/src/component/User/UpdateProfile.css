@@ -165,7 +165,6 @@
   margin-top: 0.5rem;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   outline: none;
-<<<<<<< HEAD
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,21 +268,12 @@
   opacity: 1;
 }
 
-=======
-}
-
-.up-submit-btn:hover {
-  background: #1f1f1f;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
 .up-submit-btn:active {
   transform: translateY(0);
   box-shadow: none;
 }
 
->>>>>>> 9a45c50 (Programmingwithht (#2))
+
 /* ── Responsive — mobile ──────────────────────────────────── */
 @media screen and (max-width: 480px) {
   .up-page {
