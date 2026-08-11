@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./sidebar.css";
 import logo from "../../images/logo.png";
+import defaultAvatar from "../../images/Profile.png";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TreeView, TreeItem } from "@material-ui/lab";
@@ -15,15 +16,73 @@ import {
   FiStar,
 } from "react-icons/fi";
 
+/* ── gradient palette for initials ── */
+const GRADIENTS = [
+  ["#f43f5e", "#fb923c"],
+  ["#8b5cf6", "#6366f1"],
+  ["#06b6d4", "#3b82f6"],
+  ["#10b981", "#059669"],
+  ["#f59e0b", "#ef4444"],
+  ["#ec4899", "#8b5cf6"],
+  ["#14b8a6", "#06b6d4"],
+  ["#6366f1", "#8b5cf6"],
+  ["#f97316", "#f59e0b"],
+  ["#84cc16", "#10b981"],
+];
+const getGradient = (name = "") => GRADIENTS[(name.charCodeAt(0) || 0) % GRADIENTS.length];
+
+/* ── SmartAvatar ── */
+const SmartAvatar = ({ src, name, size = 32, className = "" }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const initial = (name || "A").charAt(0).toUpperCase();
+  const [from, to] = getGradient(name);
+
+  useEffect(() => { setImgFailed(false); }, [src]);
+
+  if (!imgFailed && src && src !== defaultAvatar) {
+    return (
+      <img
+        src={src}
+        alt={name || "Avatar"}
+        className={className}
+        style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
+        onError={() => setImgFailed(true)}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={className}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: `linear-gradient(135deg, ${from}, ${to})`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        fontWeight: 700,
+        fontSize: size * 0.4,
+        flexShrink: 0,
+        userSelect: "none",
+        textShadow: "0 1px 3px rgba(0,0,0,0.25)",
+      }}
+    >
+      {initial}
+    </div>
+  );
+};
+
+/* ════════════════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════════════════ */
 const Sidebar = () => {
   const { pathname } = useLocation();
   const { user }     = useSelector((s) => s.user);
 
   const isActive = (path) => (pathname === path ? "sidebar-active" : "");
-
-  const initials = user?.name
-    ? user.name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)
-    : "AD";
 
   return (
     <div className="sidebar">
@@ -97,7 +156,12 @@ const Sidebar = () => {
 
       {/* ── User footer ── */}
       <div className="sidebar-footer">
-        <div className="sidebar-footer-avatar">{initials}</div>
+        <SmartAvatar
+          src={user?.avatar?.url}
+          name={user?.name}
+          size={32}
+          className="sidebar-footer-avatar"
+        />
         <div className="sidebar-footer-info">
           <span className="sidebar-footer-name">{user?.name || "Admin"}</span>
           <span className="sidebar-footer-role">Administrator</span>

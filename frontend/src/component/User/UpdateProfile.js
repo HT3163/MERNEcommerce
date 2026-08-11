@@ -1,19 +1,75 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./UpdateProfile.css";
-<<<<<<< HEAD
-import { FiUser, FiMail, FiUpload, FiCheckCircle, FiAlertCircle, FiLoader } from "react-icons/fi";
-=======
-import Loader from "../layout/Loader/Loader";
-import { FiUser, FiMail, FiUpload } from "react-icons/fi";
->>>>>>> 9a45c50 (Programmingwithht (#2))
+import { FiUser, FiMail, FiUpload, FiCheckCircle, FiAlertCircle, FiCamera } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, updateProfile, loadUser } from "../../actions/userAction";
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import MetaData from "../layout/MetaData";
 import { useNavigate } from "react-router-dom";
+import defaultAvatar from "../../images/Profile.png";
 
+/* ── helper: pick a gradient based on first letter ── */
+const GRADIENTS = [
+  ["#f43f5e", "#fb923c"],  // A, K, U
+  ["#8b5cf6", "#6366f1"],  // B, L, V
+  ["#06b6d4", "#3b82f6"],  // C, M, W
+  ["#10b981", "#059669"],  // D, N, X
+  ["#f59e0b", "#ef4444"],  // E, O, Y
+  ["#ec4899", "#8b5cf6"],  // F, P, Z
+  ["#14b8a6", "#06b6d4"],  // G, Q
+  ["#6366f1", "#8b5cf6"],  // H, R
+  ["#f97316", "#f59e0b"],  // I, S
+  ["#84cc16", "#10b981"],  // J, T
+];
+
+const getGradient = (name = "") => {
+  const idx = (name.charCodeAt(0) || 0) % GRADIENTS.length;
+  return GRADIENTS[idx];
+};
+
+/* ── SmartAvatar: image → onError → beautiful initial ── */
+const SmartAvatar = ({ src, name, size = 88, className = "" }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const initial  = (name || "?").charAt(0).toUpperCase();
+  const [from, to] = getGradient(name);
+
+  // reset error state when src changes (user picks new file)
+  useEffect(() => { setImgFailed(false); }, [src]);
+
+  const isDefault = src === defaultAvatar;
+
+  if (!imgFailed && !isDefault) {
+    return (
+      <img
+        src={src}
+        alt={name || "Avatar"}
+        className={`up-avatar-img ${className}`}
+        style={{ width: size, height: size }}
+        onError={() => setImgFailed(true)}
+      />
+    );
+  }
+
+  // show initials
+  return (
+    <div
+      className={`up-avatar-initial ${className}`}
+      style={{
+        width: size,
+        height: size,
+        fontSize: size * 0.38,
+        background: `linear-gradient(135deg, ${from}, ${to})`,
+      }}
+    >
+      {initial}
+    </div>
+  );
+};
+
+/* ════════════════════════════════════════════════════
+   MAIN COMPONENT
+════════════════════════════════════════════════════ */
 const UpdateProfile = () => {
-<<<<<<< HEAD
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,10 +79,9 @@ const UpdateProfile = () => {
   const [name,          setName]          = useState("");
   const [email,         setEmail]         = useState("");
   const [avatar,        setAvatar]        = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
 
-  // local UI state for banners
-  const [statusMsg,  setStatusMsg]  = useState(null);   // { type: 'error'|'success', text: string }
+  const [statusMsg, setStatusMsg] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,30 +94,6 @@ const UpdateProfile = () => {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-=======
-  const navigate  = useNavigate();
-  const dispatch  = useDispatch();
-  const alert     = useAlert();
-
-  const { user }                        = useSelector((s) => s.user);
-  const { error, isUpdated, loading }   = useSelector((s) => s.profile);
-
-  const [name,          setName]          = useState("");
-  const [email,         setEmail]         = useState("");
-  const [avatar,        setAvatar]        = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = new FormData();
-    form.set("name", name);
-    form.set("email", email);
-    form.set("avatar", avatar);
-    dispatch(updateProfile(form));
-  };
-
-  const handleAvatarChange = (e) => {
->>>>>>> 9a45c50 (Programmingwithht (#2))
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -70,36 +101,26 @@ const UpdateProfile = () => {
         setAvatar(reader.result);
       }
     };
-<<<<<<< HEAD
     reader.readAsDataURL(file);
-=======
-    reader.readAsDataURL(e.target.files[0]);
->>>>>>> 9a45c50 (Programmingwithht (#2))
   };
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
-      setAvatarPreview(user.avatar?.url || "/Profile.png");
+      setAvatarPreview(user.avatar?.url || defaultAvatar);
     }
-<<<<<<< HEAD
   }, [user]);
 
   useEffect(() => {
-=======
->>>>>>> 9a45c50 (Programmingwithht (#2))
     if (error) {
       setStatusMsg({ type: "error", text: error });
       dispatch(clearErrors());
     }
     if (isUpdated) {
-<<<<<<< HEAD
       setStatusMsg({ type: "success", text: "Profile updated successfully!" });
       dispatch(loadUser());
       dispatch({ type: UPDATE_PROFILE_RESET });
-
-      // navigate after short delay so user sees success message
       const t = setTimeout(() => navigate("/account"), 1800);
       return () => clearTimeout(t);
     }
@@ -107,12 +128,11 @@ const UpdateProfile = () => {
 
   return (
     <Fragment>
-      <MetaData title="Update Profile — LUXE" />
+      <MetaData title="Update Profile" />
 
       <div className="up-page">
         <div className="up-card">
 
-          {/* Heading */}
           <h2 className="up-heading">Update Profile</h2>
           <p className="up-subtext">Change your name, email or profile photo</p>
 
@@ -129,93 +149,36 @@ const UpdateProfile = () => {
                 className="up-banner-close"
                 aria-label="Dismiss"
                 onClick={() => setStatusMsg(null)}
-              >
-                ×
-              </button>
-=======
-      alert.success("Profile updated successfully");
-      dispatch(loadUser());
-      navigate("/account");
-      dispatch({ type: UPDATE_PROFILE_RESET });
-    }
-  }, [dispatch, error, alert, navigate, user, isUpdated]);
-
-  return (
-    <Fragment>
-      {loading ? (
-        <Loader />
-      ) : (
-        <Fragment>
-          <MetaData title="Update Profile — LUXE" />
-
-          <div className="up-page">
-            <div className="up-card">
-
-              {/* Heading */}
-              <h2 className="up-heading">Update Profile</h2>
-              <p className="up-subtext">Change your name, email or profile photo</p>
-
-              <form className="up-form" encType="multipart/form-data" onSubmit={handleSubmit}>
-
-                {/* Name */}
-                <div className="up-input-group">
-                  <span className="up-icon"><FiUser size={16} /></span>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    required
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="up-input-group">
-                  <span className="up-icon"><FiMail size={16} /></span>
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    required
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                {/* Avatar */}
-                <div className="up-avatar-section">
-                  <img
-                    src={avatarPreview}
-                    alt="Avatar preview"
-                    className="up-avatar-preview"
-                  />
-                  <label htmlFor="up-avatar-input" className="up-file-label">
-                    <FiUpload size={14} />
-                    Choose Photo
-                  </label>
-                  <input
-                    id="up-avatar-input"
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    className="up-file-input"
-                    onChange={handleAvatarChange}
-                  />
-                </div>
-
-                <button type="submit" className="up-submit-btn">
-                  Save Changes
-                </button>
-              </form>
-
->>>>>>> 9a45c50 (Programmingwithht (#2))
+              >×</button>
             </div>
           )}
 
           <form className="up-form" onSubmit={handleSubmit}>
 
-            {/* Name */}
+            {/* ── Avatar picker ── */}
+            <div className="up-avatar-section">
+              <div className="up-avatar-wrap">
+                <SmartAvatar
+                  src={avatarPreview}
+                  name={name}
+                  size={88}
+                />
+                <label htmlFor="up-avatar-input" className="up-avatar-edit-btn" title="Change photo">
+                  <FiCamera size={14} />
+                </label>
+              </div>
+              <p className="up-avatar-hint">Click the camera icon to change photo</p>
+              <input
+                id="up-avatar-input"
+                type="file"
+                name="avatar"
+                accept="image/*"
+                className="up-file-input"
+                onChange={handleAvatarChange}
+              />
+            </div>
+
+            {/* ── Name ── */}
             <div className="up-input-group">
               <span className="up-icon"><FiUser size={16} /></span>
               <input
@@ -228,7 +191,7 @@ const UpdateProfile = () => {
               />
             </div>
 
-            {/* Email */}
+            {/* ── Email ── */}
             <div className="up-input-group">
               <span className="up-icon"><FiMail size={16} /></span>
               <input
@@ -241,28 +204,7 @@ const UpdateProfile = () => {
               />
             </div>
 
-            {/* Avatar */}
-            <div className="up-avatar-section">
-              <img
-                src={avatarPreview}
-                alt="Avatar preview"
-                className="up-avatar-preview"
-              />
-              <label htmlFor="up-avatar-input" className="up-file-label">
-                <FiUpload size={14} />
-                Choose Photo
-              </label>
-              <input
-                id="up-avatar-input"
-                type="file"
-                name="avatar"
-                accept="image/*"
-                className="up-file-input"
-                onChange={handleAvatarChange}
-              />
-            </div>
-
-            {/* Submit */}
+            {/* ── Submit ── */}
             <button type="submit" className="up-submit-btn" disabled={loading}>
               {loading ? (
                 <span className="up-btn-loading">
