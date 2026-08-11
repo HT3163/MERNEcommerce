@@ -684,7 +684,7 @@
 .nav-profile-avatar-init {
   width: 38px; height: 38px;
   border-radius: 50%;
-  background: var(--indigo);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: var(--white);
   display: flex; align-items: center; justify-content: center;
   font-family: 'Inter', sans-serif;
@@ -765,6 +765,21 @@
   display: flex; align-items: center; justify-content: center;
 }
 
+/* ── Shared gradient-initial base (used by NavSmartAvatar) ── */
+.nav-avatar-initial {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  user-select: none;
+  flex-shrink: 0;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
 /* ── Avatar trigger button ───────────────────────────── */
 .nav-avatar-btn {
   display: flex;
@@ -789,10 +804,11 @@
 }
 .nav-avatar-btn:hover .nav-avatar { border-color: var(--indigo); }
 
+/* Initials in trigger — kept for any legacy references */
 .nav-avatar-init {
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: var(--indigo);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: var(--white);
   display: flex; align-items: center; justify-content: center;
   font-family: 'Inter', sans-serif;
@@ -1050,7 +1066,7 @@
 .nav-drawer-avatar-init {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: var(--indigo);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: var(--white);
   display: flex; align-items: center; justify-content: center;
   font-weight: 700;
@@ -1153,16 +1169,87 @@
   .nav-burger     { display: flex; }
   .nav-login-btn  { display: none; }
   .nav-inner      { padding: 0 1rem; }
+
+  /* Hide wishlist icon on tablet to save space */
+  .nav-icon-btn[aria-label="Wishlist"] { display: none; }
 }
 
-/* Small mobile — tighten search float */
-@media (max-width: 480px) {
-  .nav-search-float {
-    width: calc(100vw - 2rem);
-    right: -0.5rem;
-  }
-  .nav-drawer { width: 88vw; max-width: 320px; }
+/* Small mobile */
+@media (max-width: 600px) {
   .nav-announce-bar { font-size: 0.66rem; }
+
+  /* ── Search float: full-width bar anchored below header ── */
+  .nav-search-float {
+    position: fixed;
+    /* sit directly under the header (announce 34 + header 68) */
+    top: 102px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 2px solid var(--indigo);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 0.625rem 1rem;
+    transform-origin: top center;
+  }
+  .nav-search-float.open {
+    transform: translateY(0) scale(1);
+  }
+
+  .nav-search-form {
+    border-radius: var(--radius-full);
+    padding: 0.6rem 1rem;
+  }
+
+  .nav-search-input {
+    font-size: 1rem; /* prevent iOS zoom on focus */
+  }
+
+  /* ── Notification panel: full-width fixed ── */
+  .nav-notif-panel {
+    position: fixed;
+    top: 102px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    transform-origin: top center;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  .nav-notif-list {
+    max-height: none; /* let parent scroll instead */
+  }
+
+  /* ── Profile panel: full-width fixed ── */
+  .nav-profile-panel {
+    position: fixed;
+    top: 102px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    transform-origin: top center;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  /* Drawer width */
+  .nav-drawer { width: 88vw; max-width: 320px; }
+
+  /* Tighten action buttons row */
+  .nav-actions { gap: 0; }
+  .nav-icon-btn { width: 34px; height: 34px; }
 }
 
 /* Large screens — a bit more padding */

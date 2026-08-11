@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { logout } from "../../../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import defaultAvatar from "../../../images/Profile.png";
 
 const UserOptions = ({ user }) => {
     const cartItems = useSelector((state)=> state.cart);
@@ -66,8 +67,9 @@ const UserOptions = ({ user }) => {
                 icon={
                     <img
                         className="speedDialIcon"
-                        src={user.avatar.url ? user.avatar.url : "https://raw.githubusercontent.com/meabhisingh/mernProjectEcommerce/master/frontend/src/images/Profile.png"}
+                        src={user.avatar && user.avatar.url ? user.avatar.url : defaultAvatar}
                         alt="Profile"
+                        onError={(e) => { e.target.onerror = null; e.target.src = defaultAvatar; }}
                     />
                 }
             >

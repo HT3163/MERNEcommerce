@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useAlert } from 'react-alert';
 import { logout } from '../../../actions/userAction';
 import './Header.css';
+import defaultAvatar from '../../../images/Profile.png';
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 import {
@@ -12,6 +13,71 @@ import {
   FiLogOut, FiSettings, FiShoppingCart, FiGrid, FiBarChart2,
   FiChevronRight, FiCheckCircle, FiAlertCircle, FiTruck,
 } from 'react-icons/fi';
+
+// ── Gradient palette — consistent per first letter ────────────────────────────
+const GRADIENTS = [
+  ['#f43f5e', '#fb923c'],
+  ['#8b5cf6', '#6366f1'],
+  ['#06b6d4', '#3b82f6'],
+  ['#10b981', '#059669'],
+  ['#f59e0b', '#ef4444'],
+  ['#ec4899', '#8b5cf6'],
+  ['#14b8a6', '#06b6d4'],
+  ['#6366f1', '#8b5cf6'],
+  ['#f97316', '#f59e0b'],
+  ['#84cc16', '#10b981'],
+];
+const getGradient = (name = '') => GRADIENTS[(name.charCodeAt(0) || 0) % GRADIENTS.length];
+
+// ── NavSmartAvatar ─────────────────────────────────────────────────────────────
+// Shows the real avatar image; on error (or no URL) shows a gradient initial circle
+const NavSmartAvatar = ({ src, name, size = 34, className = '', style = {} }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const initial = (name || '?').charAt(0).toUpperCase();
+  const [from, to] = getGradient(name);
+
+  // Reset error flag whenever the src changes (e.g. user updates profile)
+  useEffect(() => { setImgFailed(false); }, [src]);
+
+  const hasRealUrl = src && src !== defaultAvatar;
+
+  if (hasRealUrl && !imgFailed) {
+    return (
+      <img
+        src={src}
+        alt={name || 'Profile'}
+        className={className}
+        style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, ...style }}
+        onError={() => setImgFailed(true)}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={`nav-avatar-initial ${className}`}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        background: `linear-gradient(135deg, ${from}, ${to})`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: size * 0.38,
+        flexShrink: 0,
+        userSelect: 'none',
+        textShadow: '0 1px 3px rgba(0,0,0,0.25)',
+        letterSpacing: '-0.01em',
+        ...style,
+      }}
+    >
+      {initial}
+    </div>
+  );
+};
 
 // ── Category data ──────────────────────────────────────────────────────────────
 const CATEGORIES = [
@@ -349,17 +415,12 @@ const Header = () => {
                   aria-expanded={profileOpen}
                   aria-haspopup="true"
                 >
-                  {user?.avatar?.url ? (
-                    <img
-                      src={user.avatar.url}
-                      alt={user?.name || 'Profile'}
-                      className="nav-avatar"
-                    />
-                  ) : (
-                    <div className="nav-avatar-init">
-                      {user?.name?.charAt(0).toUpperCase() || 'U'}
-                    </div>
-                  )}
+                  <NavSmartAvatar
+                    src={user?.avatar?.url}
+                    name={user?.name}
+                    size={34}
+                    className="nav-avatar"
+                  />
                   <span className="nav-avatar-chevron"><FiChevronDown size={11} /></span>
                 </button>
 
@@ -367,13 +428,12 @@ const Header = () => {
                 <div className={`nav-dropdown nav-profile-panel${profileOpen ? ' open' : ''}`} role="menu">
                   {/* User info header */}
                   <div className="nav-profile-info">
-                    {user?.avatar?.url ? (
-                      <img src={user.avatar.url} alt={user.name} className="nav-profile-avatar" />
-                    ) : (
-                      <div className="nav-profile-avatar-init">
-                        {user?.name?.charAt(0).toUpperCase() || 'U'}
-                      </div>
-                    )}
+                    <NavSmartAvatar
+                      src={user?.avatar?.url}
+                      name={user?.name}
+                      size={38}
+                      className="nav-profile-avatar"
+                    />
                     <div>
                       <p className="nav-profile-name">{user?.name}</p>
                       <p className="nav-profile-email">{user?.email}</p>
@@ -562,13 +622,12 @@ const Header = () => {
           {isAuthenticated ? (
             <Fragment>
               <div className="nav-drawer-user-info">
-                {user?.avatar?.url ? (
-                  <img src={user.avatar.url} alt={user.name} className="nav-drawer-avatar" />
-                ) : (
-                  <div className="nav-drawer-avatar-init">
-                    {user?.name?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                )}
+                <NavSmartAvatar
+                  src={user?.avatar?.url}
+                  name={user?.name}
+                  size={36}
+                  className="nav-drawer-avatar"
+                />
                 <div>
                   <p className="nav-drawer-user-name">{user?.name}</p>
                   <p className="nav-drawer-user-email">{user?.email}</p>

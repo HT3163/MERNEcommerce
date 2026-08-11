@@ -7,7 +7,7 @@ import { myOrders, clearErrors } from "../../actions/orderAction";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader/Loader";
 import "./Dashboard.css";
-
+import defaultAvatar from "../../images/Profile.png";
 import {
   FiGrid, FiPackage, FiHeart, FiMapPin, FiUser,
   FiSettings, FiLogOut, FiMenu, FiX, FiChevronRight,
@@ -16,6 +16,65 @@ import {
   FiEdit2, FiLock, FiMail, FiPhone, FiCamera,
   FiPlus, FiTrash2, FiHome, FiStar,
 } from "react-icons/fi";
+
+/* ── gradient palette for initials ── */
+const GRADIENTS = [
+  ["#f43f5e", "#fb923c"],
+  ["#8b5cf6", "#6366f1"],
+  ["#06b6d4", "#3b82f6"],
+  ["#10b981", "#059669"],
+  ["#f59e0b", "#ef4444"],
+  ["#ec4899", "#8b5cf6"],
+  ["#14b8a6", "#06b6d4"],
+  ["#6366f1", "#8b5cf6"],
+  ["#f97316", "#f59e0b"],
+  ["#84cc16", "#10b981"],
+];
+const getGradient = (name = "") => GRADIENTS[(name.charCodeAt(0) || 0) % GRADIENTS.length];
+
+/* ── SmartAvatar: real image → onError → styled initial ── */
+const SmartAvatar = ({ src, name, size = 40, className = "" }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const initial = (name || "?").charAt(0).toUpperCase();
+  const [from, to] = getGradient(name);
+
+  useEffect(() => { setImgFailed(false); }, [src]);
+
+  if (!imgFailed && src && src !== defaultAvatar) {
+    return (
+      <img
+        src={src}
+        alt={name || "Avatar"}
+        className={className}
+        style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover" }}
+        onError={() => setImgFailed(true)}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={`db-avatar-initial ${className}`}
+      style={{
+        width: size,
+        height: size,
+        fontSize: size * 0.38,
+        background: `linear-gradient(135deg, ${from}, ${to})`,
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        fontWeight: 700,
+        flexShrink: 0,
+        userSelect: "none",
+        textShadow: "0 1px 4px rgba(0,0,0,0.2)",
+      }}
+    >
+      {initial}
+    </div>
+  );
+};
 
 // ── helpers ───────────────────────────────────────────
 const fmt = (n) =>
@@ -109,10 +168,12 @@ const Dashboard = () => {
           {/* Avatar block */}
           <div className="db-sidebar-user">
             <div className="db-avatar-wrap">
-              {user?.avatar?.url
-                ? <img src={user.avatar.url} alt={user.name} className="db-avatar-img" />
-                : <div className="db-avatar-init">{user?.name?.charAt(0).toUpperCase()}</div>
-              }
+              <SmartAvatar
+                src={user?.avatar?.url}
+                name={user?.name}
+                size={48}
+                className="db-avatar-img"
+              />
               <span className="db-avatar-ring" />
             </div>
             <div className="db-sidebar-user-info">
@@ -423,10 +484,12 @@ const ProfileTab = ({ user }) => (
       {/* Avatar */}
       <div className="db-profile-avatar-block">
         <div className="db-profile-avatar-wrap">
-          {user?.avatar?.url
-            ? <img src={user.avatar.url} alt={user.name} className="db-profile-avatar-img" />
-            : <div className="db-profile-avatar-init">{user?.name?.charAt(0).toUpperCase()}</div>
-          }
+          <SmartAvatar
+            src={user?.avatar?.url}
+            name={user?.name}
+            size={80}
+            className="db-profile-avatar-img"
+          />
           <Link to="/me/update" className="db-profile-avatar-edit" aria-label="Change photo">
             <FiCamera size={14} />
           </Link>
