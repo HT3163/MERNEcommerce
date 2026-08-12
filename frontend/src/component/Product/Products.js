@@ -49,6 +49,7 @@ const Products = () => {
   // State
   const [currentPage, setCurrentPage] = useState(1);
   const [price,       setPrice]       = useState([0, 2000]);
+  const [priceCommit, setPriceCommit] = useState([0, 2000]); // debounced value sent to API
   const [category,    setCategory]    = useState("");
   const [ratings,     setRatings]     = useState(0);
   const [gridView,    setGridView]    = useState(true);
@@ -64,20 +65,29 @@ const Products = () => {
     filteredProductsCount,
   } = useSelector((state) => state.products);
 
+  // Debounce price → only fire API 600ms after user stops dragging
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPriceCommit(price);
+      setCurrentPage(1);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [price]);
+
   // Effects
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-    dispatch(getProduct(keyword, currentPage, price, category, ratings));
-  }, [dispatch, keyword, currentPage, price, category, ratings, alert, error]);
+    dispatch(getProduct(keyword, currentPage, priceCommit, category, ratings));
+  }, [dispatch, keyword, currentPage, priceCommit, category, ratings, alert, error]);
 
   // Handlers
-  const handlePriceChange  = (_, newPrice) => { setPrice(newPrice); setCurrentPage(1); };
+  const handlePriceChange  = (_, newPrice) => { setPrice(newPrice); }; // just updates slider visually; debounce fires API
   const handleCategory     = (cat)         => { setCategory(cat === category ? "" : cat); setCurrentPage(1); };
   const handleRating       = (r)           => { setRatings(r === ratings ? 0 : r); setCurrentPage(1); };
-  const handleClearFilters = ()            => { setCategory(""); setRatings(0); setPrice([0, 2000]); setCurrentPage(1); };
+  const handleClearFilters = ()            => { setCategory(""); setRatings(0); setPrice([0, 2000]); setPriceCommit([0, 2000]); setCurrentPage(1); };
 
   const count        = filteredProductsCount;
   const hasFilters   = category || ratings > 0 || price[0] > 0 || price[1] < 2000;
@@ -129,7 +139,7 @@ const Products = () => {
                     {(price[0] > 0 || price[1] < 2000) && (
                       <button
                         className="sidebar-clear-btn"
-                        onClick={() => setPrice([0, 2000])}
+                        onClick={() => { setPrice([0, 2000]); setPriceCommit([0, 2000]); }}
                         aria-label="Clear price filter"
                       >
                         <FiX size={12} /> Clear

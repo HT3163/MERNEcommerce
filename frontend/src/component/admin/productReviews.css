@@ -527,3 +527,66 @@
 @media (max-width: 400px) {
   .pr-stats { grid-template-columns: 1fr; }
 }
+
+/* ── Inline Error Banner ─────────────────────────────────────── */
+.pr-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 0.6rem;
+  animation: prBannerIn 0.25s ease both;
+}
+
+@keyframes prBannerIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pr-error-banner-icon {
+  flex-shrink: 0;
+  color: #ef4444;
+  margin-top: 1px;
+}
+
+.pr-error-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pr-error-banner-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b91c1c;
+  margin: 0 0 0.2rem;
+}
+
+.pr-error-banner-msg {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin: 0;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.pr-error-banner-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  padding: 0.1rem;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.pr-error-banner-close:hover {
+  background: #fecaca;
+}
