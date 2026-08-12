@@ -20,6 +20,7 @@ import {
   FiUser,
   FiHash,
   FiAlertCircle,
+  FiX,
 } from "react-icons/fi";
 
 /* ── Star rating display ─────────────────────────────────── */
@@ -47,7 +48,9 @@ const ProductReviews = () => {
   const { error: deleteError, isDeleted } = useSelector((s) => s.review);
   const { error, reviews, loading }       = useSelector((s) => s.productReviews);
 
-  const [productId, setProductId] = useState("");
+  const [productId,     setProductId]     = useState("");
+  const [searchError,   setSearchError]   = useState(""); // inline error banner
+  const [hasSearched,   setHasSearched]   = useState(false);
 
   const deleteReviewHandler = (reviewId) => {
     if (window.confirm("Delete this review permanently?")) {
@@ -57,21 +60,45 @@ const ProductReviews = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setSearchError("");
+    setHasSearched(true);
     dispatch(getAllReviews(productId));
   };
 
+  // Handle API error once — show inline banner, then clear from redux
   useEffect(() => {
-    if (productId.length === 24) {
-      dispatch(getAllReviews(productId));
+    if (error) {
+      setSearchError(error);
+      dispatch(clearErrors());
     }
-    if (error)       { alert.error(error);       dispatch(clearErrors()); }
-    if (deleteError) { alert.error(deleteError);  dispatch(clearErrors()); }
+  }, [dispatch, error]);
+
+  // Handle delete errors/success separately
+  useEffect(() => {
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
     if (isDeleted) {
       alert.success("Review deleted successfully");
       navigate("/admin/reviews");
       dispatch({ type: DELETE_REVIEW_RESET });
     }
-  }, [dispatch, alert, error, deleteError, navigate, isDeleted, productId]);
+  }, [dispatch, alert, deleteError, navigate, isDeleted]);
+
+  // Auto-fetch when productId hits 24 chars
+  useEffect(() => {
+    if (productId.length === 24) {
+      setSearchError("");
+      setHasSearched(true);
+      dispatch(getAllReviews(productId));
+    }
+    // Reset search state when field is cleared
+    if (productId.length === 0) {
+      setHasSearched(false);
+      setSearchError("");
+    }
+  }, [dispatch, productId]);
 
   /* ── Derived stats ─────────────────────────────────────── */
   const totalReviews = reviews ? reviews.length : 0;
@@ -211,6 +238,26 @@ const ProductReviews = () => {
                     ({productId.length}/24)
                   </p>
                 )}
+
+                {/* Inline error banner */}
+                {searchError && (
+                  <div className="pr-error-banner">
+                    <div className="pr-error-banner-icon">
+                      <FiAlertCircle size={18} />
+                    </div>
+                    <div className="pr-error-banner-body">
+                      <p className="pr-error-banner-title">No reviews found</p>
+                      <p className="pr-error-banner-msg">{searchError}</p>
+                    </div>
+                    <button
+                      className="pr-error-banner-close"
+                      onClick={() => setSearchError("")}
+                      aria-label="Dismiss error"
+                    >
+                      <FiX size={15} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -283,8 +330,8 @@ const ProductReviews = () => {
                 />
               </div>
             ) : (
-              /* Empty state */
-              productId.length === 24 && !loading && (
+              /* Empty state — only show after a real search with no error */
+              hasSearched && !loading && !searchError && (
                 <div className="pr-empty">
                   <div className="pr-empty-icon">
                     <FiMessageSquare size={32} />
