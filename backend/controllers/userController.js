@@ -6,7 +6,10 @@ const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto')
 const cloudinary = require('cloudinary')
+const { OAuth2Client } = require('google-auth-library');
 
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+console.log("Google Client ID:", process.env.GOOGLE_CLIENT_ID);
 
 // Register a User 
 exports.registerUser = catchAsyncErrors( async(req,res,next)=> {
@@ -48,6 +51,10 @@ exports.loginUser = catchAsyncErrors(async (req,res,next)=> {
 
     if(!user){return next(new ErrorHander("Invalid email and password",401))}
 
+    if((user.authProvider === "google" || user.googleId) && !user.password) {
+        return next(new ErrorHander("This account uses Google Sign-In. Please continue with Google.",400))
+    }
+
     const isPasswordMatched = await user.comparePassword(password);
 
     if(!isPasswordMatched) {
@@ -57,6 +64,115 @@ exports.loginUser = catchAsyncErrors(async (req,res,next)=> {
     sendToken(user,200,res);
 
 })
+
+exports.getGoogleClientId = catchAsyncErrors(async (req, res, next) => {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+        return next(new ErrorHander("Google Sign-In is not configured", 500));
+    }
+
+    res.status(200).json({
+        success: true,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+    });
+});
+
+exports.googleAuth = catchAsyncErrors(async (req, res, next) => {
+    const { credential } = req.body;
+
+    if (!credential) {
+        return next(new ErrorHander("Missing Google credential", 400));
+    }
+
+    if (!process.env.GOOGLE_CLIENT_ID) {
+        return next(new ErrorHander("Google Sign-In is not configured", 500));
+    }
+
+    let ticket;
+
+    try {
+        ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+    } catch (error) {
+        const message = error && error.message ? error.message.toLowerCase() : "";
+        const authMessage = message.includes("expired")
+            ? "Expired Google token"
+            : "Invalid Google token";
+
+        return next(new ErrorHander(authMessage, 401));
+    }
+
+    const payload = ticket.getPayload();
+
+    if (!payload) {
+        return next(new ErrorHander("Invalid Google token", 401));
+    }
+
+    const {
+        sub,
+        email,
+        name,
+        picture,
+        email_verified: emailVerified,
+    } = payload;
+
+    if (!sub || !email) {
+        return next(new ErrorHander("Invalid Google token", 401));
+    }
+
+    if (!emailVerified) {
+        return next(new ErrorHander("Unverified email", 400));
+    }
+
+    const googleUser = await User.findOne({ googleId: sub });
+    const emailUser = await User.findOne({ email });
+
+    if (googleUser && emailUser && googleUser._id.toString() !== emailUser._id.toString()) {
+        return next(new ErrorHander("Google account already linked to another account", 409));
+    }
+
+    if (emailUser && (emailUser.authProvider || "local") === "local" && !emailUser.googleId) {
+        return next(
+            new ErrorHander(
+                "An account with this email already exists. Please sign in with email and password.",
+                409
+            )
+        );
+    }
+
+    let user = googleUser || emailUser;
+
+    if (!user) {
+        user = await User.create({
+            name: name || email.split("@")[0],
+            email,
+            googleId: sub,
+            authProvider: "google",
+            profilePicture: picture,
+            avatar: picture ? { url: picture } : undefined,
+        });
+    } else {
+        user.googleId = user.googleId || sub;
+        user.authProvider = "google";
+        user.profilePicture = picture || user.profilePicture;
+
+        if (name) {
+            user.name = name;
+        }
+
+        if ((!user.avatar || !user.avatar.public_id) && picture) {
+            user.avatar = {
+                public_id: user.avatar ? user.avatar.public_id : undefined,
+                url: picture,
+            };
+        }
+
+        await user.save({ validateBeforeSave: false });
+    }
+
+    sendToken(user, 200, res);
+});
 
 
 // Logout User
@@ -167,7 +283,10 @@ exports.updatePassword = catchAsyncErrors(async(req,res,next)=> {
 
     const user = await User.findById(req.user.id).select("+password");
 
-    
+    if((user.authProvider === "google" || user.googleId) && !user.password) {
+        return next(new ErrorHander("Password login is not enabled for this Google account.",400))
+    }
+
     const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
     
     if(!isPasswordMatched) {
@@ -195,9 +314,11 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
     if(req.body.avatar && req.body.avatar !== '' && req.body.avatar !== 'undefined'){
         const user = await User.findById(req.user.id);
-        const imageId = user.avatar.public_id;
+        const imageId = user.avatar && user.avatar.public_id ? user.avatar.public_id : null;
 
-        await cloudinary.v2.uploader.destroy(imageId);
+        if(imageId){
+            await cloudinary.v2.uploader.destroy(imageId);
+        }
 
         const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
             folder: "avatars",
@@ -209,7 +330,9 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
         newUserData.avatar = {
             public_id: myCloud.public_id,
             url: myCloud.secure_url
-        }
+        };
+
+        newUserData.profilePicture = myCloud.secure_url;
 
     }
     

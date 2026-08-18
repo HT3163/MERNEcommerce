@@ -437,7 +437,7 @@
 }
 
 .field-error::before {
-  content: "⚠";
+  content: "!";
   font-size: 0.65rem;
 }
 
@@ -455,4 +455,61 @@
 
 .inputGroup--error svg {
   color: #ff6b7a !important;
+}
+
+.googleAuthSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.googleAuthDivider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+
+.googleAuthDivider::before,
+.googleAuthDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.googleAuthButtonWrap {
+  width: 100%;
+}
+
+.googleAuthMount,
+.googleAuthFallback {
+  width: 100%;
+}
+
+.googleAuthMount > div {
+  display: flex;
+  justify-content: center;
+}
+
+.googleAuthFallback {
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.googleAuthError {
+  margin: 0;
+  text-align: center;
+  font-size: 0.76rem;
+  color: #ff9aa4;
+  line-height: 1.5;
 }

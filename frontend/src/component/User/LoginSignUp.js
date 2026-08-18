@@ -1,69 +1,74 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./LoginSignUp.css";
 import Loader from "../layout/Loader/Loader";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, login, register } from "../../actions/userAction";
-import { useAlert } from "react-alert";
-import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { clearErrors, googleLogin, login, register } from "../../actions/userAction";
 import defaultAvatar from "../../images/Profile.png";
 
 const LoginSignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const alert    = useAlert();
 
   const { error, loading, isAuthenticated } = useSelector((state) => state.user);
 
   const [activeTab, setActiveTab] = useState("login");
-
-  /* ── Login state ── */
-  const [loginEmail,    setLoginEmail]    = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [loginErrors,   setLoginErrors]   = useState({});
-
-  /* ── Register state ── */
+  const [loginErrors, setLoginErrors] = useState({});
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const { name, email, password } = user;
-  const [regErrors,     setRegErrors]     = useState({});
-
-  /* ── Avatar ── */
-  const [avatar,        setAvatar]        = useState(defaultAvatar);
+  const [regErrors, setRegErrors] = useState({});
+  const [avatar, setAvatar] = useState(defaultAvatar);
   const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
-
-  /* ── API error banner ── */
   const [apiError, setApiError] = useState("");
+  const [googleClientId, setGoogleClientId] = useState("");
+  const [googleReady, setGoogleReady] = useState(false);
+  const [googleError, setGoogleError] = useState("");
+  const loginGoogleRef = useRef(null);
+  const registerGoogleRef = useRef(null);
 
-  /* ── Validation helpers ── */
   const validateLogin = () => {
     const errs = {};
-    if (!loginEmail)                          errs.email    = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(loginEmail)) errs.email    = "Enter a valid email address.";
-    if (!loginPassword)                        errs.password = "Password is required.";
-    else if (loginPassword.length < 8)         errs.password = "Password must be at least 8 characters.";
+
+    if (!loginEmail) errs.email = "Email is required.";
+    else if (!/\S+@\S+\.\S+/.test(loginEmail)) errs.email = "Enter a valid email address.";
+
+    if (!loginPassword) errs.password = "Password is required.";
+    else if (loginPassword.length < 8) errs.password = "Password must be at least 8 characters.";
+
     return errs;
   };
 
   const validateRegister = () => {
     const errs = {};
-    if (!name.trim())                        errs.name     = "Full name is required.";
-    else if (name.trim().length < 4)         errs.name     = "Name must be at least 4 characters.";
-    if (!email)                              errs.email    = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(email))   errs.email    = "Enter a valid email address.";
-    if (!password)                           errs.password = "Password is required.";
-    else if (password.length < 8)           errs.password = "Password must be at least 8 characters.";
+
+    if (!name.trim()) errs.name = "Full name is required.";
+    else if (name.trim().length < 4) errs.name = "Name must be at least 4 characters.";
+
+    if (!email) errs.email = "Email is required.";
+    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = "Enter a valid email address.";
+
+    if (!password) errs.password = "Password is required.";
+    else if (password.length < 8) errs.password = "Password must be at least 8 characters.";
+
     return errs;
   };
 
-  /* ── Submit handlers ── */
   const loginSubmit = (e) => {
     e.preventDefault();
     const errs = validateLogin();
-    if (Object.keys(errs).length) { setLoginErrors(errs); return; }
+
+    if (Object.keys(errs).length) {
+      setLoginErrors(errs);
+      return;
+    }
+
     setLoginErrors({});
     setApiError("");
     dispatch(login(loginEmail, loginPassword));
@@ -72,9 +77,15 @@ const LoginSignUp = () => {
   const registerSubmit = (e) => {
     e.preventDefault();
     const errs = validateRegister();
-    if (Object.keys(errs).length) { setRegErrors(errs); return; }
+
+    if (Object.keys(errs).length) {
+      setRegErrors(errs);
+      return;
+    }
+
     setRegErrors({});
     setApiError("");
+
     const myForm = new FormData();
     myForm.set("name", name);
     myForm.set("email", email);
@@ -86,39 +97,162 @@ const LoginSignUp = () => {
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
+
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
         }
       };
+
       reader.readAsDataURL(e.target.files[0]);
     } else {
       setUser({ ...user, [e.target.name]: e.target.value });
-      // Clear field error on change
+
       if (regErrors[e.target.name]) {
-        setRegErrors((prev) => { const n = { ...prev }; delete n[e.target.name]; return n; });
+        setRegErrors((prev) => {
+          const nextErrors = { ...prev };
+          delete nextErrors[e.target.name];
+          return nextErrors;
+        });
       }
     }
   };
-
+  console.log("Location search:", location.search);
   const redirect = location.search ? location.search.split("=")[1] : "/account";
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchGoogleClientId = async () => {
+      try {
+        const { data } = await axios.get("/api/v1/auth/google/client-id");
+
+        if (isMounted) {
+          setGoogleClientId(data.clientId);
+          setGoogleError("");
+        }
+      } catch (err) {
+        if (isMounted) {
+          setGoogleError(err.response?.data?.message || "Google Sign-In is currently unavailable.");
+        }
+      }
+    };
+
+    fetchGoogleClientId();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!googleClientId) return;
+
+    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    const handleLoad = () => setGoogleReady(true);
+    const handleError = () => setGoogleError("Google Sign-In failed to load. Please try again.");
+
+    if (existingScript) {
+      if (window.google?.accounts?.id) {
+        setGoogleReady(true);
+        return undefined;
+      }
+
+      existingScript.addEventListener("load", handleLoad);
+      existingScript.addEventListener("error", handleError);
+
+      return () => {
+        existingScript.removeEventListener("load", handleLoad);
+        existingScript.removeEventListener("error", handleError);
+      };
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = handleLoad;
+    script.onerror = handleError;
+    document.body.appendChild(script);
+
+    return () => {
+      script.onload = null;
+      script.onerror = null;
+    };
+  }, [googleClientId]);
 
   useEffect(() => {
     if (error) {
       setApiError(error);
       dispatch(clearErrors());
     }
-    if (isAuthenticated) navigate(redirect);
-  }, [dispatch, error, navigate, isAuthenticated, redirect]);
 
-  /* ── Switch tab → clear all errors ── */
+    if (isAuthenticated) navigate(redirect);
+  }, [dispatch, error, isAuthenticated, navigate, redirect]);
+
+  useEffect(() => {
+    if (!googleReady || !googleClientId || !window.google?.accounts?.id) return;
+
+    const buttonRef = activeTab === "login" ? loginGoogleRef.current : registerGoogleRef.current;
+
+    if (!buttonRef) return;
+
+    buttonRef.innerHTML = "";
+
+    window.google.accounts.id.initialize({
+      client_id: googleClientId,
+      callback: (response) => {
+        if (!response.credential) {
+          setApiError("Missing Google credential");
+          return;
+        }
+
+        setApiError("");
+        dispatch(googleLogin(response.credential));
+      },
+    });
+
+    window.google.accounts.id.renderButton(buttonRef, {
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "rectangular",
+      logo_alignment: "left",
+      width: Math.min(buttonRef.clientWidth || 360, 360),
+    });
+  }, [activeTab, dispatch, googleClientId, googleReady]);
+
   const switchTab = (tab) => {
     setActiveTab(tab);
     setLoginErrors({});
     setRegErrors({});
     setApiError("");
   };
+
+  const renderGoogleSection = (buttonRef) => (
+    <div className="googleAuthSection">
+      <div className="googleAuthDivider">
+        <span>OR</span>
+      </div>
+
+      <div className="googleAuthButtonWrap">
+        <div
+          ref={buttonRef}
+          className="googleAuthMount"
+          style={{ display: googleReady && !googleError ? "block" : "none" }}
+        />
+
+        {!googleReady && !googleError && (
+          <button type="button" className="googleAuthFallback" disabled>
+            Loading Google Sign-In...
+          </button>
+        )}
+
+        {googleError && <p className="googleAuthError">{googleError}</p>}
+      </div>
+    </div>
+  );
 
   return (
     <Fragment>
@@ -127,33 +261,27 @@ const LoginSignUp = () => {
       ) : (
         <div className="LoginSignUpContainer">
           <div className="LoginSignUpBox">
-
-            {/* ── Brand header ── */}
             <div className="loginBrand">
               <h1>ShopEase</h1>
               <p>Your premium shopping destination</p>
             </div>
 
-            {/* ── Tab switcher ── */}
             <div className="login_signUp_toggle">
               <div className={`tabSlider ${activeTab === "register" ? "slideRight" : ""}`}></div>
-              <p className={activeTab === "login"    ? "activeTab" : ""} onClick={() => switchTab("login")}>LOGIN</p>
+              <p className={activeTab === "login" ? "activeTab" : ""} onClick={() => switchTab("login")}>LOGIN</p>
               <p className={activeTab === "register" ? "activeTab" : ""} onClick={() => switchTab("register")}>REGISTER</p>
             </div>
 
-            {/* ── API error banner ── */}
             {apiError && (
               <div className="auth-error-banner">
-                <span className="auth-error-banner-icon">⚠</span>
+                <span className="auth-error-banner-icon">!</span>
                 <span className="auth-error-banner-msg">{apiError}</span>
-                <button className="auth-error-banner-close" onClick={() => setApiError("")} aria-label="Dismiss">✕</button>
+                <button className="auth-error-banner-close" onClick={() => setApiError("")} aria-label="Dismiss">x</button>
               </div>
             )}
 
-            {/* ── Login form ── */}
             {activeTab === "login" && (
               <form className="authForm" onSubmit={loginSubmit} noValidate>
-
                 <div className={`inputGroup${loginErrors.email ? " inputGroup--error" : ""}`}>
                   <input
                     type="email"
@@ -161,7 +289,13 @@ const LoginSignUp = () => {
                     value={loginEmail}
                     onChange={(e) => {
                       setLoginEmail(e.target.value);
-                      if (loginErrors.email) setLoginErrors((p) => { const n={...p}; delete n.email; return n; });
+                      if (loginErrors.email) {
+                        setLoginErrors((prev) => {
+                          const nextErrors = { ...prev };
+                          delete nextErrors.email;
+                          return nextErrors;
+                        });
+                      }
                     }}
                   />
                   <MailOutlineIcon />
@@ -175,7 +309,13 @@ const LoginSignUp = () => {
                     value={loginPassword}
                     onChange={(e) => {
                       setLoginPassword(e.target.value);
-                      if (loginErrors.password) setLoginErrors((p) => { const n={...p}; delete n.password; return n; });
+                      if (loginErrors.password) {
+                        setLoginErrors((prev) => {
+                          const nextErrors = { ...prev };
+                          delete nextErrors.password;
+                          return nextErrors;
+                        });
+                      }
                     }}
                   />
                   <LockOpenIcon />
@@ -185,13 +325,13 @@ const LoginSignUp = () => {
                 <Link to="/password/forgot" className="forgotLink">Forgot password?</Link>
 
                 <input type="submit" value="LOGIN" className="loginBtn" />
+
+                {renderGoogleSection(loginGoogleRef)}
               </form>
             )}
 
-            {/* ── Register form ── */}
             {activeTab === "register" && (
               <form className="authForm" encType="multipart/form-data" onSubmit={registerSubmit} noValidate>
-
                 <div className={`inputGroup${regErrors.name ? " inputGroup--error" : ""}`}>
                   <input
                     type="text"
@@ -219,7 +359,7 @@ const LoginSignUp = () => {
                 <div className={`inputGroup${regErrors.password ? " inputGroup--error" : ""}`}>
                   <input
                     type="password"
-                    placeholder="Password (min 6 characters)"
+                    placeholder="Password (min 8 characters)"
                     name="password"
                     value={password}
                     onChange={registerDataChange}
@@ -239,9 +379,10 @@ const LoginSignUp = () => {
                 </div>
 
                 <input type="submit" value="CREATE ACCOUNT" className="signUpBtn" />
+
+                {renderGoogleSection(registerGoogleRef)}
               </form>
             )}
-
           </div>
         </div>
       )}
